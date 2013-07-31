@@ -413,10 +413,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         if (sb.toString().length() > 0) {
           sb.append(", ");
         }
-        if (er.getName().length() > 0) {
+        if (er.getName() != null && er.getName().length() > 0) {
           sb.append(er.getName());
         }
-        sb.append("<" + er.getEmail() + ">");
+        sb.append("<").append(er.getEmail()).append(">");
       }
     }
     
