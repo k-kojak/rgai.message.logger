@@ -2,11 +2,14 @@ package hu.uszeged.inf.rgai.messagelog;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPInputStream;
+import com.sun.mail.smtp.SMTPTransport;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
+import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.FullEmailMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
+import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +25,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Flags;
@@ -33,6 +37,9 @@ import javax.mail.NoSuchProviderException;
 import javax.mail.Part;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import javax.net.ssl.SSLHandshakeException;
 
@@ -371,5 +378,48 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     return new FullEmailMessage(subject, content.getAttachmentList(), to, content.getContent(),
             (long)(ms.getMessageNumber()), from, ms.getSentDate(), Type.EMAIL);
     
+  }
+
+  @Override
+  public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject) throws
+          NoSuchProviderException, MessagingException, IOException, AddressException {
+    
+    Properties props = System.getProperties();
+    props.put("mail.smtps.host", account.getSmtpAddress());
+    props.put("mail.smtps.auth","true");
+    Session session = Session.getInstance(props, null);
+    javax.mail.Message msg = new MimeMessage(session);
+    msg.setFrom(new InternetAddress(account.getEmail()));
+    
+    String addressList = getAddressList(to);
+
+    msg.setRecipients(javax.mail.Message.RecipientType.TO, InternetAddress.parse(addressList));
+    msg.setSubject(subject);
+    msg.setText(content);
+//    msg.setHeader("X-Mailer", "");
+    msg.setSentDate(new Date());
+    SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+    t.connect(account.getSmtpAddress(), account.getEmail(), account.getPassword());
+    t.sendMessage(msg, msg.getAllRecipients());
+    t.close();
+    
+  }
+  
+  private static String getAddressList(Set<? extends MessageRecipient> to) {
+    StringBuilder sb = new StringBuilder();
+    for (MessageRecipient p : to) {
+      EmailMessageRecipient er = (EmailMessageRecipient)p;
+      if (er.getEmail().length() > 0) {
+        if (sb.toString().length() > 0) {
+          sb.append(", ");
+        }
+        if (er.getName().length() > 0) {
+          sb.append(er.getName());
+        }
+        sb.append("<" + er.getEmail() + ">");
+      }
+    }
+    
+    return sb.toString();
   }
 }

@@ -1,12 +1,16 @@
 package hu.uszeged.inf.rgai.messagelog;
 
+import hu.uszeged.inf.rgai.messagelog.beans.Account;
 import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
+import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
+import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.cert.CertPathValidatorException;
 import java.util.List;
+import java.util.Set;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -35,8 +39,9 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws AuthenticationFailedException 
    */
-  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException, SSLHandshakeException,
-          ConnectException, NoSuchProviderException, UnknownHostException, IOException, MessagingException, AuthenticationFailedException;
+  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException,
+          SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException,
+          IOException, MessagingException, AuthenticationFailedException;
   
   /**
    * Returns a single message.
@@ -48,5 +53,8 @@ public interface MessageProvider {
    * @throws IOException 
    */
   public FullMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException;
+  
+  public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
+          throws NoSuchProviderException, MessagingException, IOException;
   
 }

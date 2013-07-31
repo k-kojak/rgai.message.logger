@@ -5,6 +5,7 @@ import com.sun.mail.gimap.GmailMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
+import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.FetchProfile;
 import javax.mail.Flags;
@@ -114,4 +116,9 @@ public class GmailMessageProvider implements MessageProvider {
     return null;
   }
 
+  @Override
+  public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject) throws
+          NoSuchProviderException, MessagingException, IOException {
+    
+  }
 }

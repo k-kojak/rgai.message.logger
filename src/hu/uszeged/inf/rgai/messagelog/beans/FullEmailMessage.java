@@ -10,16 +10,16 @@ import java.util.List;
  * 
  * @author Tamas Kojedzinszky
  */
-public class FullEmailMessage extends FullContentMessage {
+public class FullEmailMessage extends FullMessage {
   
   private String title;
-  private List<File> attachments;
   private List<Person> to;
+  private MessageAtom content;
 
   public FullEmailMessage(String title, List<File> attachments, List<Person> to, String content, long id, Person from, Date date, MessageProvider.Type messageType) {
-    super(content, id, from, date, messageType);
+    super(id, from, messageType);
+    this.content = new MessageAtom(content, date, attachments);
     this.title = title;
-    this.attachments = attachments;
     this.to = to;
   }
 
@@ -28,7 +28,7 @@ public class FullEmailMessage extends FullContentMessage {
   }
 
   public List<File> getAttachments() {
-    return attachments;
+    return content.attachments;
   }
 
   public List<Person> getTo() {
@@ -37,11 +37,18 @@ public class FullEmailMessage extends FullContentMessage {
 
   @Override
   public String toString() {
-    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + attachments + ", to=" + to + ", date=" + date + ", messageType=" + messageType + "}\n"
+    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + content.attachments + ", to=" + to + ", date=" + content.getDate() + ", messageType=" + messageType + "}\n"
             + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
             + content;
   }
+
+  @Override
+  public Date getDate() {
+    return content.getDate();
+  }
   
-  
+  public String getContent() {
+    return content.getContent();
+  }
   
 }

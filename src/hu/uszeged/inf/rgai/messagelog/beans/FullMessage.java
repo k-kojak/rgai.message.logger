@@ -12,13 +12,11 @@ public abstract class FullMessage {
 
   protected long id;
   protected Person from;
-  protected Date date;
   protected Type messageType;
 
-  public FullMessage(long id, Person from, Date date, Type messageType) {
+  public FullMessage(long id, Person from, Type messageType) {
     this.id = id;
     this.from = from;
-    this.date = date;
     this.messageType = messageType;
   }
 
@@ -30,9 +28,7 @@ public abstract class FullMessage {
     return from;
   }
 
-  public Date getDate() {
-    return date;
-  }
+  public abstract Date getDate();
 
   public Type getMessageType() {
     return messageType;
@@ -40,7 +36,7 @@ public abstract class FullMessage {
 
   @Override
   public String toString() {
-    return "FullMessage{" + "id=" + id + ", from=" + from + ", date=" + date + ", messageType=" + messageType + '}';
+    return "FullMessage{" + "id=" + id + ", from=" + from + ", date=" + getDate() + ", messageType=" + messageType + '}';
   }
   
 }
