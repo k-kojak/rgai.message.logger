@@ -1,7 +1,6 @@
 package hu.uszeged.inf.rgai.messagelog.beans;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
-import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -23,6 +22,17 @@ public class MessageListElement implements Comparable<MessageListElement> {
   
   protected FullMessage fullMessage;
 
+  /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param seen <code>true</code> if the message is seen, <code>false</code> otherwise
+   * @param title title of the message, can be <code>null</code>
+   * @param subTitle subtitle of the message, can be <code>null</code>
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
   public MessageListElement(long id, boolean seen, String title, String subTitle, Person from, Date date, Type messageType) {
     this.id = id;
     this.seen = seen;
@@ -33,21 +43,61 @@ public class MessageListElement implements Comparable<MessageListElement> {
     this.messageType = messageType;
   }
 
+  /**
+   * Default constructor.
+   */
   public MessageListElement() {
   }
   
+  /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param seen <code>true</code> if the message is seen, <code>false</code> otherwise
+   * @param title title of the message, can be <code>null</code>
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
   public MessageListElement(long id, boolean seen, String title, Person from, Date date, Type messageType) {
     this(id, seen, title, null, from, date, messageType);
   }
   
+  /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param title title of the message, can be <code>null</code>
+   * @param subTitle subtitle of the message, can be <code>null</code>
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
   public MessageListElement(long id, String title, String subTitle, Person from, Date date, Type messageType) {
     this(id, true, title, subTitle, from, date, messageType);
   }
   
+  /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param title title of the message, can be <code>null</code>
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
   public MessageListElement(long id, String title, Person from, Date date, Type messageType) {
     this(id, true, title, null, from, date, messageType);
   }
-  
+
+  /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
   public MessageListElement(long id, Person from, Date date, Type messageType) {
     this(id, true, null, null, from, date, messageType);
   }

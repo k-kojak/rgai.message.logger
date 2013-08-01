@@ -18,6 +18,13 @@ public class MessageAtom {
   protected Date date;
   protected List<File> attachments;
 
+  /**
+   * Constructor for an atom message.
+   * 
+   * @param content the content of the message
+   * @param date the date of the message
+   * @param attachments attachments if is there any, can be <code>null</code>
+   */
   public MessageAtom(String content, Date date, List<File> attachments) {
     this.content = content;
     this.date = date;

@@ -14,6 +14,8 @@ public abstract class FullMessage {
   protected Person from;
   protected Type messageType;
 
+  public FullMessage() {}
+  
   public FullMessage(long id, Person from, Type messageType) {
     this.id = id;
     this.from = from;
