@@ -1,5 +1,7 @@
 package hu.uszeged.inf.rgai.messagelog;
 
+import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.FacebookAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.FacebookMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.FullFacebookMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
@@ -26,8 +28,17 @@ import javax.net.ssl.SSLHandshakeException;
  */
 public class FacebookMessageProvider implements MessageProvider {
 
+  // use this variable to access facebook
+  private FacebookAccount account;
+  
+  public FacebookMessageProvider(FacebookAccount account) {
+    this.account = account;
+  }
+  
   @Override
-  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException, SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException, IOException, MessagingException, AuthenticationFailedException {
+  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException,
+          SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException, IOException,
+          MessagingException, AuthenticationFailedException {
     // EXAMPLE CODE FOR PETI
     List<MessageListElement> messages = new LinkedList<MessageListElement>();
     // getting sender information, just give a random id, and the real name of the user
