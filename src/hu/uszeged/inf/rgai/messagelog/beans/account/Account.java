@@ -1,4 +1,4 @@
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.account;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 
@@ -11,5 +11,7 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 public interface Account {
   
   public Type getAccountType();
-  public boolean equals(Account a);
+  
+  @Override
+  public boolean equals(Object account);
 }

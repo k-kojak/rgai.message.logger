@@ -1,10 +1,10 @@
 package hu.uszeged.inf.rgai.messagelog;
 
-import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
-import hu.uszeged.inf.rgai.messagelog.beans.FacebookAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.account.FacebookAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.FacebookMessageRecipient;
-import hu.uszeged.inf.rgai.messagelog.beans.FullFacebookMessage;
-import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullFacebookMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
@@ -53,7 +53,7 @@ public class FacebookMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
+  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
     // EXAMPLE CODE FOR PETI
     Person sender = new Person(3, "Zelk Zoltán");
     FullFacebookMessage ffm = new FullFacebookMessage(id, sender, Type.EMAIL);

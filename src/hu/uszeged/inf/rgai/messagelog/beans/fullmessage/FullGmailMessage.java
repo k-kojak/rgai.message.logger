@@ -1,4 +1,4 @@
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
 import java.util.Date;

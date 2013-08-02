@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class MessageAtom {
   
-  protected String content;
-  protected Date date;
-  protected List<File> attachments;
+  private String content;
+  private Date date;
+  private List<File> attachments;
 
   /**
    * Constructor for an atom message.

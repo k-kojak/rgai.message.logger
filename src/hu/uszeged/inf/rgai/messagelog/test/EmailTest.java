@@ -2,7 +2,7 @@ package hu.uszeged.inf.rgai.messagelog.test;
 
 import hu.uszeged.inf.rgai.messagelog.GmailMessageProvider;
 import hu.uszeged.inf.rgai.messagelog.SimpleEmailMessageProvider;
-import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import java.io.FileInputStream;

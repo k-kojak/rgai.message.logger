@@ -2,8 +2,8 @@ package hu.uszeged.inf.rgai.messagelog;
 
 import com.sun.mail.gimap.GmailFolder;
 import com.sun.mail.gimap.GmailMessage;
-import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
-import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
@@ -112,7 +112,7 @@ public class GmailMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullMessage getMessage(long id) {
+  public FullSimpleMessage getMessage(long id) {
     return null;
   }
 

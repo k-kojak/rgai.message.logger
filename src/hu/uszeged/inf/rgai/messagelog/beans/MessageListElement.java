@@ -1,5 +1,6 @@
 package hu.uszeged.inf.rgai.messagelog.beans;
 
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 import java.util.Date;
 
@@ -20,7 +21,7 @@ public class MessageListElement implements Comparable<MessageListElement> {
   protected Date date;
   protected Type messageType;
   
-  protected FullMessage fullMessage;
+  protected FullSimpleMessage fullMessage;
 
   /**
    * Constructor for a message element in a list.
@@ -130,11 +131,11 @@ public class MessageListElement implements Comparable<MessageListElement> {
     return messageType;
   }
 
-  public FullMessage getFullMessage() {
+  public FullSimpleMessage getFullMessage() {
     return fullMessage;
   }
 
-  public void setFullMessage(FullMessage fullMessage) {
+  public void setFullMessage(FullSimpleMessage fullMessage) {
     this.fullMessage = fullMessage;
   }
   

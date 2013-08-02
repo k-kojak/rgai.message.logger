@@ -1,6 +1,8 @@
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
+import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
+import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  * 
  * @author Tamas Kojedzinszky
  */
-public class FullEmailMessage extends FullMessage {
+public class FullEmailMessage extends FullSimpleMessage {
   
   private String title;
   private List<Person> to;
@@ -28,7 +30,7 @@ public class FullEmailMessage extends FullMessage {
   }
 
   public List<File> getAttachments() {
-    return content.attachments;
+    return content.getAttachments();
   }
 
   public List<Person> getTo() {
@@ -37,7 +39,7 @@ public class FullEmailMessage extends FullMessage {
 
   @Override
   public String toString() {
-    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + content.attachments + ", to=" + to + ", date=" + content.getDate() + ", messageType=" + messageType + "}\n"
+    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + content.getAttachments() + ", to=" + to + ", date=" + content.getDate() + ", messageType=" + messageType + "}\n"
             + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
             + content;
   }

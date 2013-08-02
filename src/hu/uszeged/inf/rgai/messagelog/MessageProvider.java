@@ -1,7 +1,7 @@
 package hu.uszeged.inf.rgai.messagelog;
 
-import hu.uszeged.inf.rgai.messagelog.beans.Account;
-import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.account.Account;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
@@ -52,7 +52,7 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws IOException 
    */
-  public FullMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException;
+  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException;
   
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
           throws NoSuchProviderException, MessagingException, IOException;

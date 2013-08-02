@@ -1,4 +1,4 @@
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.account;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 
@@ -73,7 +73,7 @@ public class EmailAccount implements Account {
   }
 
   @Override
-  public boolean equals(Account obj) {
+  public boolean equals(Object obj) {
     if (obj == null) {
       return false;
     }

@@ -1,6 +1,7 @@
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.util.Date;
 
 /**
@@ -8,33 +9,37 @@ import java.util.Date;
  * 
  * @author Tamas Kojedzinszky
  */
-public abstract class FullMessage {
+public abstract class FullSimpleMessage implements FullMessage {
 
   protected long id;
   protected Person from;
   protected Type messageType;
 
-  public FullMessage() {}
+  public FullSimpleMessage() {}
   
-  public FullMessage(long id, Person from, Type messageType) {
+  public FullSimpleMessage(long id, Person from, Type messageType) {
     this.id = id;
     this.from = from;
     this.messageType = messageType;
   }
 
+  @Override
   public long getId() {
     return id;
   }
 
+  @Override
   public Person getFrom() {
     return from;
   }
 
-  public abstract Date getDate();
-
+  @Override
   public Type getMessageType() {
     return messageType;
   }
+  
+  @Override
+  public abstract Date getDate();
 
   @Override
   public String toString() {

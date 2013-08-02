@@ -3,11 +3,11 @@ package hu.uszeged.inf.rgai.messagelog;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPInputStream;
 import com.sun.mail.smtp.SMTPTransport;
-import hu.uszeged.inf.rgai.messagelog.beans.EmailAccount;
+import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
-import hu.uszeged.inf.rgai.messagelog.beans.FullEmailMessage;
-import hu.uszeged.inf.rgai.messagelog.beans.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullEmailMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
@@ -350,7 +350,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
+  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
 
     Store store = this.getStore();
     IMAPFolder folder;

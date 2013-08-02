@@ -2,9 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package hu.uszeged.inf.rgai.messagelog.beans;
+package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
+import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +15,7 @@ import java.util.List;
  *
  * @author Tamas Kojedzinszky
  */
-public class FullFacebookMessage extends FullMessage {
+public class FullFacebookMessage extends FullSimpleMessage {
   
   private List<MessageAtom> messages = null;
 
