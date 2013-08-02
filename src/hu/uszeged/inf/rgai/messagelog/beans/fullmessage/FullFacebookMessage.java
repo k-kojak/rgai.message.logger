@@ -5,7 +5,6 @@
 package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
-import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.util.Date;
 import java.util.LinkedList;

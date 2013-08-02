@@ -1,7 +1,6 @@
 package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
-import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;

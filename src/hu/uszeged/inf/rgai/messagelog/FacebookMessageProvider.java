@@ -1,11 +1,10 @@
 package hu.uszeged.inf.rgai.messagelog;
 
-import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.account.FacebookAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.FacebookMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullFacebookMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
-import hu.uszeged.inf.rgai.messagelog.beans.MessageAtom;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.MessageAtom;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
