@@ -57,9 +57,9 @@ public class FacebookMessageProvider implements MessageProvider {
     Person sender = new Person(3, "Zelk Zoltán");
     FullFacebookMessage ffm = new FullFacebookMessage(id, sender, Type.EMAIL);
     
-    ffm.addMessage(new MessageAtom("This is the content of a message item...", new Date(), null));
-    ffm.addMessage(new MessageAtom("This is the content of another...", new Date(), null));
-    ffm.addMessage(new MessageAtom("This is the third message...", new Date(), null));
+    ffm.addMessage(new MessageAtom("This is the content of a message item...", new Date(), null, null));
+    ffm.addMessage(new MessageAtom("This is the content of another...", new Date(), null, null));
+    ffm.addMessage(new MessageAtom("This is the third message...", new Date(), null, null));
     
     return ffm;
   }

@@ -26,6 +26,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.mail.Address;
 import javax.mail.AuthenticationFailedException;
 import javax.mail.Flags;
@@ -152,7 +154,21 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       if (from == null) {
         // skipping email
       } else {
-        emails.add(new MessageListElement((long)(m.getMessageNumber()), seen, subject, new Person(1, from), date, Type.EMAIL));
+        String fromName = null;
+        String fromEmail = null;
+        String regex = "(.*)<([^<>]*)>";
+        if (from.matches(regex)) {
+          Pattern pattern = Pattern.compile(regex);
+          Matcher matcher = pattern.matcher(from);
+          while(matcher.find()) {
+            fromName = matcher.group(1);
+            fromEmail = matcher.group(2);
+            break;
+          }
+        } else {
+          fromName = from;
+        }
+        emails.add(new MessageListElement((long)(m.getMessageNumber()), seen, subject, new Person(1, fromName, fromEmail), date, Type.EMAIL));
       }
     }
     inbox.close(true);

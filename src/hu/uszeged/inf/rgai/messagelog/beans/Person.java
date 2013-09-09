@@ -9,10 +9,13 @@ import java.util.List;
  * @author Tamas Kojedzinszky
  */
 public class Person {
-  private int id;
-  private String name;
-  private List<String> emails;
+  protected int id;
+  protected String name;
+  protected List<String> emails;
 
+  
+  public Person() {}
+  
   public Person(int id, String name, List<String> emails) {
     this.id = id;
     this.name = name;
