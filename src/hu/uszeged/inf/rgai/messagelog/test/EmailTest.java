@@ -48,18 +48,16 @@ public class EmailTest {
 //    for (MessageListElement mle : list) {
 //      System.out.println(mle);
 //    }
-//    System.out.println(gmp.getMessage(267));
-    
-    
+//    System.out.println(gmp.getMessage(500));
     
     
     // SIMPLE EMAIL
-    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, null));
+    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, false));
     list = semp.getMessageList(0, 20);
     for (MessageListElement mle : list) {
       System.out.println(mle);
     }
-    System.out.println(semp.getMessage(28));
+//    System.out.println(semp.getMessage(28));
     
 //    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp));
 //    Set<EmailMessageRecipient> recipients = new HashSet<EmailMessageRecipient>();
