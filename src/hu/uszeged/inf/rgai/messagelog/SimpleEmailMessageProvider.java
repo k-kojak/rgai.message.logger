@@ -88,9 +88,11 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     props.put("mail.imaps.ssl.trust", "*");
     if (this.account.isSsl()) {
       props.setProperty("mail.imap.port", "993");
+      props.setProperty("mail.smtp.port", "465");
       props.setProperty("mail.store.protocol", "imaps");
     } else {
       props.setProperty("mail.imap.port", "143");
+      props.setProperty("mail.smtp.port", "25");
       props.setProperty("mail.store.protocol", "imap");
     }
 //    props.setProperty("mail.imaps.socketFactory.class", "hu.uszeged.inf.rgai.messagelog.trustmanager.MyTrustManager");
@@ -413,6 +415,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           NoSuchProviderException, MessagingException, IOException, AddressException {
     
     Properties props = System.getProperties();
+    this.setProperties(props);
     props.put("mail.smtps.host", account.getSmtpAddress());
     props.put("mail.smtps.auth","true");
     Session session = Session.getInstance(props, null);
