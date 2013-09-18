@@ -1,6 +1,5 @@
 package hu.uszeged.inf.rgai.messagelog.test;
 
-import hu.uszeged.inf.rgai.messagelog.GmailMessageProvider;
 import hu.uszeged.inf.rgai.messagelog.SimpleEmailMessageProvider;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
@@ -38,7 +37,6 @@ public class EmailTest {
       System.err.println("Az accounts file nem talalhato...");
       e.printStackTrace();
     }
-    
     
     List<MessageListElement> list;
     

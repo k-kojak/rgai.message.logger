@@ -8,9 +8,9 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
  * @author Tamas Kojedzinszky
  */
 public class FacebookAccount implements Account {
-  private String userName;
-  private String password;
-  private Type accountType;
+  protected String userName;
+  protected String password;
+  protected Type accountType;
 
   public FacebookAccount() {}
   
