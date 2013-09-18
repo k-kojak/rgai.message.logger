@@ -51,14 +51,14 @@ public class EmailTest {
     
     // SIMPLE EMAIL
     SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
-//    list = semp.getMessageList(0, 20);
-//    for (MessageListElement mle : list) {
-//      System.out.println(mle);
-//    }
+    list = semp.getMessageList(0, 20);
+   for (MessageListElement mle : list) {
+      System.out.println(mle);
+    }
 //    System.out.println(semp.getMessage(1));
-    Set<EmailMessageRecipient> mr = new HashSet<EmailMessageRecipient>();
-    mr.add(new EmailMessageRecipient("k. tamas", "tamas.kojedzinszky@gmail.com"));
-    semp.sendMessage(mr, "my content, yiha...", "my subject, " + (Math.random()));
+    //Set<EmailMessageRecipient> mr = new HashSet<EmailMessageRecipient>();
+   // mr.add(new EmailMessageRecipient("k. tamas", "tamas.kojedzinszky@gmail.com"));
+   // semp.sendMessage(mr, "my content, yiha...", "my subject, " + (Math.random()));
     
     
 //    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp));
