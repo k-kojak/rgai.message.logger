@@ -104,4 +104,9 @@ public class EmailAccount implements Account {
     return true;
   }
 
+  @Override
+  public String getDisplayName() {
+    return email;
+  }
+
 }

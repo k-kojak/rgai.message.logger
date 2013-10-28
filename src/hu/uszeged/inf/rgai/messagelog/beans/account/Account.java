@@ -10,6 +10,7 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
  */
 public interface Account {
   
+  public String getDisplayName();
   public Type getAccountType();
   
   @Override

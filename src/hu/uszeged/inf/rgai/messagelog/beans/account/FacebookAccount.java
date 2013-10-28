@@ -61,5 +61,10 @@ public class FacebookAccount implements Account {
     }
     return true;
   }
+
+  @Override
+  public String getDisplayName() {
+    return userName;
+  }
   
 }
