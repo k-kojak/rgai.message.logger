@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class MessageListElement implements Comparable<MessageListElement> {
   
-  protected long id;
+  protected String id;
   protected boolean seen;
   protected String title;
   protected String subTitle;
@@ -34,7 +34,7 @@ public class MessageListElement implements Comparable<MessageListElement> {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(long id, boolean seen, String title, String subTitle, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, boolean seen, String title, String subTitle, Person from, Date date, Type messageType) {
     this.id = id;
     this.seen = seen;
     this.title = title;
@@ -60,7 +60,7 @@ public class MessageListElement implements Comparable<MessageListElement> {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(long id, boolean seen, String title, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, boolean seen, String title, Person from, Date date, Type messageType) {
     this(id, seen, title, null, from, date, messageType);
   }
   
@@ -74,7 +74,7 @@ public class MessageListElement implements Comparable<MessageListElement> {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(long id, String title, String subTitle, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, String title, String subTitle, Person from, Date date, Type messageType) {
     this(id, true, title, subTitle, from, date, messageType);
   }
   
@@ -87,7 +87,7 @@ public class MessageListElement implements Comparable<MessageListElement> {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(long id, String title, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, String title, Person from, Date date, Type messageType) {
     this(id, true, title, null, from, date, messageType);
   }
 
@@ -99,11 +99,11 @@ public class MessageListElement implements Comparable<MessageListElement> {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(long id, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, Person from, Date date, Type messageType) {
     this(id, true, null, null, from, date, messageType);
   }
   
-  public long getId() {
+  public String getId() {
     return id;
   }
 

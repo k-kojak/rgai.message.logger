@@ -31,7 +31,7 @@ public class FullFacebookMessage extends FullSimpleMessage {
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for details
    * @param messages the message elements
    */
-  public FullFacebookMessage(long id, Person from, Type messageType, List<MessageAtom> messages) {
+  public FullFacebookMessage(String id, Person from, Type messageType, List<MessageAtom> messages) {
     super(id, from, messageType);
     this.messages = messages;
   }
@@ -43,7 +43,7 @@ public class FullFacebookMessage extends FullSimpleMessage {
    * @param from the sender
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for details
    */
-  public FullFacebookMessage(long id, Person from, Type messageType) {
+  public FullFacebookMessage(String id, Person from, Type messageType) {
     this(id, from, messageType, new LinkedList<MessageAtom>());
   }
 

@@ -50,7 +50,7 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws IOException 
    */
-  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException;
+  public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException;
   
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
           throws NoSuchProviderException, MessagingException, IOException;

@@ -8,40 +8,41 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
  * @author Tamas Kojedzinszky
  */
 public class FacebookAccount implements Account {
-  protected String userName;
+  protected String displayName;
+  protected String uniqueName;
   protected String password;
   protected Type accountType;
 
   public FacebookAccount() {}
   
-  public FacebookAccount(String userName, String password) {
-    this.userName = userName;
+  public FacebookAccount(String displayName, String uniqueName, String password) {
+    this.displayName = displayName;
+    this.uniqueName = uniqueName;
     this.password = password;
     this.accountType = Type.FACEBOOK;
-  }
-
-  public String getUserName() {
-    return userName;
   }
 
   public String getPassword() {
     return password;
   }
-
-  @Override
-  public String toString() {
-    return "FacebookAccount{" + "userName=" + userName + ", password=" + password + '}';
-  }
-
+  
   @Override
   public Type getAccountType() {
     return accountType;
   }
+  
+  @Override
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public String getUniqueName() {
+    return uniqueName;
+  }
 
   @Override
-  public int hashCode() {
-    int hash = 3;
-    return hash;
+  public String toString() {
+    return "FacebookAccount{" + "dispalyName=" + displayName + ", uniqueName=" + uniqueName + ", accountType=" + accountType + '}';
   }
 
   @Override
@@ -53,7 +54,7 @@ public class FacebookAccount implements Account {
       return false;
     }
     final FacebookAccount other = (FacebookAccount) obj;
-    if ((this.userName == null) ? (other.userName != null) : !this.userName.equals(other.userName)) {
+    if ((this.displayName == null) ? (other.displayName != null) : !this.displayName.equals(other.displayName)) {
       return false;
     }
     if (this.accountType != other.accountType) {
@@ -62,9 +63,6 @@ public class FacebookAccount implements Account {
     return true;
   }
 
-  @Override
-  public String getDisplayName() {
-    return userName;
-  }
+  
   
 }

@@ -17,7 +17,7 @@ public class FullEmailMessage extends FullSimpleMessage {
   private List<Person> to;
   private MessageAtom content;
 
-  public FullEmailMessage(String title, List<File> attachments, List<Person> to, String content, long id, Person from, Date date, MessageProvider.Type messageType) {
+  public FullEmailMessage(String title, List<File> attachments, List<Person> to, String content, String id, Person from, Date date, MessageProvider.Type messageType) {
     super(id, from, messageType);
     this.content = new MessageAtom(content, date, null, attachments);
     this.title = title;

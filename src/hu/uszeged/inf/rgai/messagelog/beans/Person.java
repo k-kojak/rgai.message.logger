@@ -9,24 +9,24 @@ import java.util.List;
  * @author Tamas Kojedzinszky
  */
 public class Person {
-  protected int id;
+  protected long id;
   protected String name;
   protected List<String> emails;
 
   
   public Person() {}
   
-  public Person(int id, String name, List<String> emails) {
+  public Person(long id, String name, List<String> emails) {
     this.id = id;
     this.name = name;
     this.emails = emails;
   }
   
-  public Person(int id, String name) {
+  public Person(long id, String name) {
     this(id, name, new LinkedList<String>());
   }
   
-  public Person(int id, String name, String email) {
+  public Person(long id, String name, String email) {
     this(id, name, new LinkedList<String>());
     addEmail(email);
   }
@@ -37,8 +37,12 @@ public class Person {
     }
   }
 
-  public int getId() {
+  public long getId() {
     return id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getName() {

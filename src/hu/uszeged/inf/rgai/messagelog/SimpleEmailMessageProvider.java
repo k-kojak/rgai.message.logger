@@ -182,7 +182,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         } else {
           fromName = from;
         }
-        emails.add(new MessageListElement((long)(m.getMessageNumber()), seen, subject, new Person(1, fromName, fromEmail), date, Type.EMAIL));
+        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person(1, fromName, fromEmail), date, Type.EMAIL));
       }
     }
     inbox.close(true);
@@ -380,7 +380,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
+  public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
 
     Store store = this.getStore();
     IMAPFolder folder;
@@ -388,7 +388,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     folder = (IMAPFolder)store.getFolder("INBOX");
     folder.open(Folder.READ_WRITE);
     
-    Message ms = folder.getMessage((int)id);
+    Message ms = folder.getMessage(Integer.parseInt(id));
     
     List<Person> to = new LinkedList<Person>();
     
@@ -406,7 +406,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     store.close();
     
     return new FullEmailMessage(subject, content.getAttachmentList(), to, content.getContent(),
-            (long)(ms.getMessageNumber()), from, ms.getSentDate(), Type.EMAIL);
+            ms.getMessageNumber()+"", from, ms.getSentDate(), Type.EMAIL);
     
   }
 

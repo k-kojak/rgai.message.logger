@@ -5,13 +5,13 @@ package hu.uszeged.inf.rgai.messagelog.beans;
  * @author Tamas Kojedzinszky
  */
 public class FacebookMessageRecipient implements MessageRecipient {
-  private long id;
+  private String id;
 
-  public FacebookMessageRecipient(long id) {
+  public FacebookMessageRecipient(String id) {
     this.id = id;
   }
 
-  public long getId() {
+  public String getId() {
     return id;
   }
 

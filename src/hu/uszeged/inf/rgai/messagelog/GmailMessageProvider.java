@@ -103,7 +103,7 @@ public class GmailMessageProvider implements MessageProvider {
         from = MimeUtility.decodeText(from);
       } catch (java.io.UnsupportedEncodingException ex) {
       }
-      emails.add(new MessageListElement((long)(m.getMessageNumber()), seen, subject, new Person(1, from), date, MessageProvider.Type.GMAIL));
+      emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person(1, from), date, MessageProvider.Type.GMAIL));
     }
     folder.close(true);
     store.close();
@@ -112,7 +112,7 @@ public class GmailMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullSimpleMessage getMessage(long id) {
+  public FullSimpleMessage getMessage(String id) {
     return null;
   }
 

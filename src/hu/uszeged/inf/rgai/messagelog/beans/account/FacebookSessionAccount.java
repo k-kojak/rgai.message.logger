@@ -5,6 +5,7 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider;
 /**
  *
  * @author Tamas Kojedzinszky
+ * @deprecated
  */
 public class FacebookSessionAccount implements Account {
   protected String displayName;

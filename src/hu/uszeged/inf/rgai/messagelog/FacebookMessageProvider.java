@@ -24,6 +24,7 @@ import javax.net.ssl.SSLHandshakeException;
 /**
  *
  * @author Tamas Kojedzinszky
+ * @deprecated 
  */
 public class FacebookMessageProvider implements MessageProvider {
 
@@ -43,16 +44,16 @@ public class FacebookMessageProvider implements MessageProvider {
     // getting sender information, just give a random id, and the real name of the user
     Person sender = new Person(1, "Kis Zoltán");
     
-    messages.add(new MessageListElement(1, false, "Title", "Subtitle", sender, new Date(), Type.FACEBOOK));
+    messages.add(new MessageListElement("1", false, "Title", "Subtitle", sender, new Date(), Type.FACEBOOK));
     
     sender = new Person(2, "Nagy Aladár");
-    messages.add(new MessageListElement(1, false, "Title2", "Subtitle2", sender, new Date(), Type.FACEBOOK));
+    messages.add(new MessageListElement("1", false, "Title2", "Subtitle2", sender, new Date(), Type.FACEBOOK));
     
     return messages;
   }
 
   @Override
-  public FullSimpleMessage getMessage(long id) throws NoSuchProviderException, MessagingException, IOException {
+  public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
     // EXAMPLE CODE FOR PETI
     Person sender = new Person(3, "Zelk Zoltán");
     FullFacebookMessage ffm = new FullFacebookMessage(id, sender, Type.EMAIL);

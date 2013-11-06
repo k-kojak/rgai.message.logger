@@ -11,20 +11,20 @@ import java.util.Date;
  */
 public abstract class FullSimpleMessage implements FullMessage {
 
-  protected long id;
+  protected String id;
   protected Person from;
   protected Type messageType;
 
   public FullSimpleMessage() {}
   
-  public FullSimpleMessage(long id, Person from, Type messageType) {
+  public FullSimpleMessage(String id, Person from, Type messageType) {
     this.id = id;
     this.from = from;
     this.messageType = messageType;
   }
 
   @Override
-  public long getId() {
+  public String getId() {
     return id;
   }
 
