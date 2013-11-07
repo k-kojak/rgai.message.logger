@@ -10,16 +10,17 @@ import java.util.List;
  * This class represents a full email message.
  * 
  * @author Tamas Kojedzinszky
+ * @deprecated 
  */
-public class FullEmailMessage extends FullSimpleMessage {
+public class FullEmailMessage implements FullMessage {
   
   private String title;
   private List<Person> to;
   private MessageAtom content;
 
   public FullEmailMessage(String title, List<File> attachments, List<Person> to, String content, String id, Person from, Date date, MessageProvider.Type messageType) {
-    super(id, from, messageType);
-    this.content = new MessageAtom(content, date, null, attachments);
+//    super(id, from, messageType);
+//    this.content = new MessageAtom(content, date, null, attachments);
     this.title = title;
     this.to = to;
   }
@@ -36,17 +37,17 @@ public class FullEmailMessage extends FullSimpleMessage {
     return to;
   }
 
-  @Override
-  public String toString() {
-    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + content.getAttachments() + ", to=" + to + ", date=" + content.getDate() + ", messageType=" + messageType + "}\n"
-            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-            + content;
-  }
+//  @Override
+//  public String toString() {
+//    return "FullEmailMessage{" + "id=" + id + ", from=" + from + ", title=" + title + ", attachments=" + content.getAttachments() + ", to=" + to + ", date=" + content.getDate() + ", messageType=" + messageType + "}\n"
+//            + "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+//            + content;
+//  }
 
-  @Override
-  public Date getDate() {
-    return content.getDate();
-  }
+//  @Override
+//  public Date getDate() {
+//    return content.getDate();
+//  }
   
   public String getContent() {
     return content.getContent();

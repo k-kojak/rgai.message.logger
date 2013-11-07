@@ -10,8 +10,8 @@ import java.util.Date;
  */
 public interface FullMessage {
   
-  public String getId();
-  public Person getFrom();
-  public Date getDate();
-  public MessageProvider.Type getMessageType();
+//  public String getId();
+//  public Person getFrom();
+//  public Date getDate();
+//  public MessageProvider.Type getMessageType();
 }

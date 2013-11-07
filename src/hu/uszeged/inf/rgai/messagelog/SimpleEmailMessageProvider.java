@@ -11,6 +11,7 @@ import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -380,7 +381,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   }
 
   @Override
-  public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
+  public FullMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
 
     Store store = this.getStore();
     IMAPFolder folder;
@@ -402,11 +403,12 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
     String subject = ms.getSubject();
     
+    Date date = ms.getSentDate();
+    
     folder.close(true);
     store.close();
     
-    return new FullEmailMessage(subject, content.getAttachmentList(), to, content.getContent(),
-            ms.getMessageNumber()+"", from, ms.getSentDate(), Type.EMAIL);
+    return new FullSimpleMessage(id, subject, content.getContent(), date, from, MessageProvider.Type.EMAIL, null);
     
   }
 

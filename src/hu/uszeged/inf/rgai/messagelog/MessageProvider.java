@@ -3,6 +3,7 @@ package hu.uszeged.inf.rgai.messagelog;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
@@ -50,7 +51,7 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws IOException 
    */
-  public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException;
+  public FullMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException;
   
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
           throws NoSuchProviderException, MessagingException, IOException;

@@ -2,48 +2,26 @@ package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
+import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Represents a full message.
  * 
  * @author Tamas Kojedzinszky
  */
-public abstract class FullSimpleMessage implements FullMessage {
-
-  protected String id;
-  protected Person from;
-  protected Type messageType;
+public class FullSimpleMessage extends MessageAtom implements FullMessage {
 
   public FullSimpleMessage() {}
   
-  public FullSimpleMessage(String id, Person from, Type messageType) {
-    this.id = id;
-    this.from = from;
-    this.messageType = messageType;
+  public FullSimpleMessage(String id, String subject, String content, Date date, Person from, Type messageType, List<File> attachments) {
+    super(id, subject, content, date, from, messageType, attachments);
   }
-
-  @Override
-  public String getId() {
-    return id;
-  }
-
-  @Override
-  public Person getFrom() {
-    return from;
-  }
-
-  @Override
-  public Type getMessageType() {
-    return messageType;
-  }
-  
-  @Override
-  public abstract Date getDate();
 
   @Override
   public String toString() {
-    return "FullMessage{" + "id=" + id + ", from=" + from + ", date=" + getDate() + ", messageType=" + messageType + '}';
+    return "FullSimpleMessage{" + "id=" + id + ", from=" + from + ", date=" + getDate() + ", messageType=" + messageType + '}';
   }
   
 }

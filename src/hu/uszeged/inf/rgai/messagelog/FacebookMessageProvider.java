@@ -56,13 +56,13 @@ public class FacebookMessageProvider implements MessageProvider {
   public FullSimpleMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
     // EXAMPLE CODE FOR PETI
     Person sender = new Person(3, "Zelk Zoltán");
-    FullFacebookMessage ffm = new FullFacebookMessage(id, sender, Type.EMAIL);
+//    FullFacebookMessage ffm = new FullFacebookMessage(id, sender, Type.EMAIL);
+//    
+//    ffm.addMessage(new MessageAtom("This is the content of a message item...", new Date(), null, null));
+//    ffm.addMessage(new MessageAtom("This is the content of another...", new Date(), null, null));
+//    ffm.addMessage(new MessageAtom("This is the third message...", new Date(), null, null));
     
-    ffm.addMessage(new MessageAtom("This is the content of a message item...", new Date(), null, null));
-    ffm.addMessage(new MessageAtom("This is the content of another...", new Date(), null, null));
-    ffm.addMessage(new MessageAtom("This is the third message...", new Date(), null, null));
-    
-    return ffm;
+    return null;
   }
 
   @Override

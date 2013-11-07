@@ -8,8 +8,9 @@ import java.util.List;
  * This class will represend a threaded gmail message.
  * 
  * @author Tamas Kojedzinszky
+ * @deprecated 
  */
-//public class FullGmailMessage extends FullMessage {
+public class FullGmailMessage implements FullMessage {
 //
 //  protected String title;
 //  protected long threadId;
@@ -22,4 +23,4 @@ import java.util.List;
 //    this.threadItems = threadItems;
 //  }
 //  
-//}
+}

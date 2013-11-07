@@ -2,6 +2,7 @@ package hu.uszeged.inf.rgai.messagelog.beans;
 
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.util.Date;
 
 /**
@@ -17,11 +18,12 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
   protected boolean seen;
   protected String title;
   protected String subTitle;
+  //TODO: this could be a list
   protected Person from;
   protected Date date;
   protected Type messageType;
   
-  protected FullSimpleMessage fullMessage;
+  protected FullMessage fullMessage;
 
   /**
    * Constructor for a message element in a list.
@@ -131,11 +133,11 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     return messageType;
   }
 
-  public FullSimpleMessage getFullMessage() {
+  public FullMessage getFullMessage() {
     return fullMessage;
   }
 
-  public void setFullMessage(FullSimpleMessage fullMessage) {
+  public void setFullMessage(FullMessage fullMessage) {
     this.fullMessage = fullMessage;
   }
   

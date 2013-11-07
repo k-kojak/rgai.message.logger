@@ -10,14 +10,16 @@ import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 public class FacebookAccount implements Account {
   protected String displayName;
   protected String uniqueName;
+  protected String id;
   protected String password;
   protected Type accountType;
 
   public FacebookAccount() {}
   
-  public FacebookAccount(String displayName, String uniqueName, String password) {
+  public FacebookAccount(String displayName, String uniqueName, String id, String password) {
     this.displayName = displayName;
     this.uniqueName = uniqueName;
+    this.id = id;
     this.password = password;
     this.accountType = Type.FACEBOOK;
   }
@@ -40,6 +42,10 @@ public class FacebookAccount implements Account {
     return uniqueName;
   }
 
+  public String getId() {
+    return id;
+  }
+  
   @Override
   public String toString() {
     return "FacebookAccount{" + "dispalyName=" + displayName + ", uniqueName=" + uniqueName + ", accountType=" + accountType + '}';
