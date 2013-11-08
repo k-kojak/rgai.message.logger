@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Tamas Kojedzinszky
  */
-public class MessageAtom {
+public class MessageAtom implements Comparable<MessageAtom> {
   
   protected String id;
   protected String subject;
@@ -97,6 +97,15 @@ public class MessageAtom {
 
   public void setMessageType(MessageProvider.Type messageType) {
     this.messageType = messageType;
+  }
+
+  @Override
+  public int compareTo(MessageAtom o) {
+    if (this.getId().equals(o.getId())) {
+      return 0;
+    } else {
+      return this.getDate().compareTo(o.getDate());
+    }
   }
   
 }
