@@ -21,6 +21,7 @@ public class MessageAtom implements Comparable<MessageAtom> {
   protected String content;
   protected Date date;
   protected Person from;
+  protected boolean isMe;
   protected MessageProvider.Type messageType;
   protected List<File> attachments;
 
@@ -33,12 +34,13 @@ public class MessageAtom implements Comparable<MessageAtom> {
    * @param date the date of the message
    * @param attachments attachments if is there any, can be <code>null</code>
    */
-  public MessageAtom(String id, String subject, String content, Date date, Person from, MessageProvider.Type type, List<File> attachments) {
+  public MessageAtom(String id, String subject, String content, Date date, Person from, boolean isMe, MessageProvider.Type type, List<File> attachments) {
     this.id = id;
     this.subject = subject;
     this.content = content;
     this.date = date;
     this.from = from;
+    this.isMe = isMe;
     this.messageType = type;
     this.attachments = attachments;
   }
@@ -91,6 +93,14 @@ public class MessageAtom implements Comparable<MessageAtom> {
     this.id = id;
   }
 
+  public boolean isIsMe() {
+    return isMe;
+  }
+
+  public void setIsMe(boolean isMe) {
+    this.isMe = isMe;
+  }
+
   public MessageProvider.Type getMessageType() {
     return messageType;
   }
@@ -104,7 +114,7 @@ public class MessageAtom implements Comparable<MessageAtom> {
     if (this.getId().equals(o.getId())) {
       return 0;
     } else {
-      return -1 * this.getDate().compareTo(o.getDate());
+      return this.getDate().compareTo(o.getDate());
     }
   }
   

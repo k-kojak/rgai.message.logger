@@ -15,8 +15,8 @@ public class FullSimpleMessage extends MessageAtom implements FullMessage {
 
   public FullSimpleMessage() {}
   
-  public FullSimpleMessage(String id, String subject, String content, Date date, Person from, Type messageType, List<File> attachments) {
-    super(id, subject, content, date, from, messageType, attachments);
+  public FullSimpleMessage(String id, String subject, String content, Date date, Person from, boolean isMe, Type messageType, List<File> attachments) {
+    super(id, subject, content, date, from, isMe, messageType, attachments);
   }
 
   @Override

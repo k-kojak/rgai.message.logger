@@ -408,7 +408,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     folder.close(true);
     store.close();
     
-    return new FullSimpleMessage(id, subject, content.getContent(), date, from, MessageProvider.Type.EMAIL, null);
+    return new FullSimpleMessage(id, subject, content.getContent(), date, from, false, MessageProvider.Type.EMAIL, null);
     
   }
 
