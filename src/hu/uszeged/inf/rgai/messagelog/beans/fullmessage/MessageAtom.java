@@ -104,7 +104,7 @@ public class MessageAtom implements Comparable<MessageAtom> {
     if (this.getId().equals(o.getId())) {
       return 0;
     } else {
-      return this.getDate().compareTo(o.getDate());
+      return -1 * this.getDate().compareTo(o.getDate());
     }
   }
   

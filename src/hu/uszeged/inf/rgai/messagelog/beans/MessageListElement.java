@@ -18,6 +18,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
   protected boolean seen;
   protected String title;
   protected String subTitle;
+  protected int unreadCount;
   //TODO: this could be a list
   protected Person from;
   protected Date date;
@@ -36,13 +37,14 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, String subTitle, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, boolean seen, String title, String subTitle, int unreadCount, Person from, Date date, Type messageType) {
     this.id = id;
     this.seen = seen;
     this.title = title;
     this.from = from;
     this.date = date;
     this.subTitle = subTitle;
+    this.unreadCount = unreadCount;
     this.messageType = messageType;
   }
 
@@ -62,8 +64,8 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, Person from, Date date, Type messageType) {
-    this(id, seen, title, null, from, date, messageType);
+  public MessageListElement(String id, boolean seen, String title, int unreadCount, Person from, Date date, Type messageType) {
+    this(id, seen, title, null, unreadCount, from, date, messageType);
   }
   
   /**
@@ -76,8 +78,8 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, String title, String subTitle, Person from, Date date, Type messageType) {
-    this(id, true, title, subTitle, from, date, messageType);
+  public MessageListElement(String id, boolean seen, String title, Person from, Date date, Type messageType) {
+    this(id, seen, title, null, -1, from, date, messageType);
   }
   
   /**
@@ -89,9 +91,9 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, String title, Person from, Date date, Type messageType) {
-    this(id, true, title, null, from, date, messageType);
-  }
+//  public MessageListElement(String id, String title, Person from, Date date, Type messageType) {
+//    this(id, true, title, null, -1, from, date, messageType);
+//  }
 
   /**
    * Constructor for a message element in a list.
@@ -101,9 +103,9 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, Person from, Date date, Type messageType) {
-    this(id, true, null, null, from, date, messageType);
-  }
+//  public MessageListElement(String id, Person from, Date date, Type messageType) {
+//    this(id, true, null, null, -1, from, date, messageType);
+//  }
   
   public String getId() {
     return id;
@@ -129,6 +131,14 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     return subTitle;
   }
 
+  public int getUnreadCount() {
+    return unreadCount;
+  }
+
+  public void setUnreadCount(int unreadCount) {
+    this.unreadCount = unreadCount;
+  }
+  
   public Type getMessageType() {
     return messageType;
   }
