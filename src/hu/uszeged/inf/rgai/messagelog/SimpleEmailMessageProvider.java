@@ -6,7 +6,6 @@ import com.sun.mail.smtp.SMTPTransport;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
-import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullEmailMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
@@ -183,7 +182,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         } else {
           fromName = from;
         }
-        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person(1, fromName, fromEmail), date, Type.EMAIL));
+        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person("1", fromName, fromEmail), date, Type.EMAIL));
       }
     }
     inbox.close(true);
@@ -377,7 +376,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     } else {
       email = ad.trim();
     }
-    return new Person(1, name, email);
+    return new Person("1", name, email);
   }
 
   @Override
