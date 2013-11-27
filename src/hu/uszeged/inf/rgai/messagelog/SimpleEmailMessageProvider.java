@@ -182,7 +182,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         } else {
           fromName = from;
         }
-        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person("1", fromName, fromEmail), date, Type.EMAIL));
+        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), date, Type.EMAIL));
       }
     }
     inbox.close(true);
@@ -376,7 +376,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     } else {
       email = ad.trim();
     }
-    return new Person("1", name, email);
+    return new Person(email, name, MessageProvider.Type.EMAIL);
   }
 
   @Override
