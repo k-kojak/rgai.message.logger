@@ -9,7 +9,7 @@ import java.util.TreeSet;
  */
 public class FullThreadMessage implements FullMessage {
   
-  protected Set<MessageAtom> messages = null;
+  private Set<MessageAtom> messages = null;
 
   /**
    * Default constructor.

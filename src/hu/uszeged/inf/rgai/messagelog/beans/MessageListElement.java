@@ -123,6 +123,10 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     return from;
   }
 
+  public void setFrom(Person from) {
+    this.from = from;
+  }
+
   public Date getDate() {
     return date;
   }

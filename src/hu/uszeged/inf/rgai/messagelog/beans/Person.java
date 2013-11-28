@@ -33,6 +33,10 @@ public class Person {
     return name;
   }
 
+  public MessageProvider.Type getType() {
+    return type;
+  }
+
   public void setName(String name) {
     this.name = name;
   }
