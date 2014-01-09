@@ -43,6 +43,26 @@ public interface MessageProvider {
           IOException, MessagingException, AuthenticationFailedException;
   
   /**
+   * Returns the list of messages.
+   * 
+   * @param offset the offset of the queried messages
+   * @param limit the limit of queried messages
+   * @param snippetMaxLength the max length of the snippet
+   * @return List of MessageListElement objects, the list of messages
+   * @throws CertPathValidatorException
+   * @throws SSLHandshakeException
+   * @throws ConnectException
+   * @throws NoSuchProviderException
+   * @throws UnknownHostException
+   * @throws IOException
+   * @throws MessagingException
+   * @throws AuthenticationFailedException 
+   */
+  public List<MessageListElement> getMessageList(int offset, int limit, int snippetMaxLength) throws CertPathValidatorException,
+          SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException,
+          IOException, MessagingException, AuthenticationFailedException;
+  
+  /**
    * Returns a single message.
    * 
    * @param id the id of the message

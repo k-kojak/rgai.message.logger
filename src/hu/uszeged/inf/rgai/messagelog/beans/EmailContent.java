@@ -25,6 +25,10 @@ public class EmailContent {
   public String getContent() {
     return content;
   }
+  
+  public String getContent(int maxLength) {
+    return content.substring(0, Math.min(content.length(), maxLength));
+  }
 
   public List<File> getAttachmentList() {
     return attachmentList;

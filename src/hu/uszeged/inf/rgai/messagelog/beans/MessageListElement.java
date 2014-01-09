@@ -82,6 +82,20 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     this(id, seen, title, null, -1, from, date, messageType);
   }
   
+   /**
+   * Constructor for a message element in a list.
+   * 
+   * @param id id of the message
+   * @param title title of the message, can be <code>null</code>
+   * @param subTitle subtitle of the message, can be <code>null</code>
+   * @param from a Person object, the sender of the message
+   * @param date date of the message
+   * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   */
+  public MessageListElement(String id, boolean seen, String title, String snippet, Person from, Date date, Type messageType) {
+    this(id, seen, title, snippet, -1, from, date, messageType);
+  }
+  
   /**
    * Constructor for a message element in a list.
    * 

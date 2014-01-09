@@ -122,9 +122,16 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     return store;
   }
   
-  @Override
   public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException, SSLHandshakeException,
           ConnectException, NoSuchProviderException, UnknownHostException, IOException, MessagingException, AuthenticationFailedException {
+    return getMessageList(offset, limit, 20);
+  }
+  
+  @Override
+  public List<MessageListElement> getMessageList(int offset, int limit, int snippetMaxLength)
+          throws CertPathValidatorException, SSLHandshakeException, ConnectException,
+          NoSuchProviderException, UnknownHostException, IOException, MessagingException,
+          AuthenticationFailedException {
     
     List<MessageListElement> emails = new LinkedList<MessageListElement>();
     Store store = this.getStore();
@@ -138,6 +145,9 @@ public class SimpleEmailMessageProvider implements MessageProvider {
 
     for (int i = messages.length - 1; i >= 0; i--) {
       Message m = messages[i];
+      EmailContent content = getMessageContent(m);
+      
+      String snippet = content.getContent(snippetMaxLength);
       
       String subject = m.getSubject();
       if (subject != null) {
@@ -171,6 +181,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         String fromName = null;
         String fromEmail = null;
         String regex = "(.*)<([^<>]*)>";
+//        System.out.println("SimpleEmailMessageProvider: from -> " + from);
         if (from.matches(regex)) {
           Pattern pattern = Pattern.compile(regex);
           Matcher matcher = pattern.matcher(from);
@@ -181,8 +192,11 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           }
         } else {
           fromName = from;
+          fromEmail = from;
         }
-        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), date, Type.EMAIL));
+//        System.out.println("fromName -> " + fromName);
+//        System.out.println("fromEmail -> " + fromEmail);
+        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet, new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), date, Type.EMAIL));
       }
     }
     inbox.close(true);
