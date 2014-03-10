@@ -4,6 +4,8 @@ import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class represents a list element in the list of messages.
@@ -21,6 +23,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
   protected int unreadCount;
   //TODO: this could be a list
   protected Person from;
+  protected List<Person> recipients;
   protected Date date;
   protected Type messageType;
   
@@ -37,11 +40,13 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, String subTitle, int unreadCount, Person from, Date date, Type messageType) {
+  public MessageListElement(String id, boolean seen, String title, String subTitle, int unreadCount, Person from,
+          List<Person> recipients, Date date, Type messageType) {
     this.id = id;
     this.seen = seen;
     this.title = title;
     this.from = from;
+    this.recipients = recipients;
     this.date = date;
     this.subTitle = subTitle;
     this.unreadCount = unreadCount;
@@ -64,8 +69,8 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, int unreadCount, Person from, Date date, Type messageType) {
-    this(id, seen, title, null, unreadCount, from, date, messageType);
+  public MessageListElement(String id, boolean seen, String title, int unreadCount, Person from, List<Person> recipients, Date date, Type messageType) {
+    this(id, seen, title, null, unreadCount, from, recipients, date, messageType);
   }
   
   /**
@@ -78,8 +83,8 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, Person from, Date date, Type messageType) {
-    this(id, seen, title, null, -1, from, date, messageType);
+  public MessageListElement(String id, boolean seen, String title, Person from, List<Person> recipients, Date date, Type messageType) {
+    this(id, seen, title, null, -1, from, recipients, date, messageType);
   }
   
    /**
@@ -92,8 +97,9 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param date date of the message
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
-  public MessageListElement(String id, boolean seen, String title, String snippet, Person from, Date date, Type messageType) {
-    this(id, seen, title, snippet, -1, from, date, messageType);
+  public MessageListElement(String id, boolean seen, String title, String snippet,
+          Person from, List<Person> recipients, Date date, Type messageType) {
+    this(id, seen, title, snippet, -1, from, recipients, date, messageType);
   }
   
   /**
@@ -135,6 +141,20 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
 
   public Person getFrom() {
     return from;
+  } 
+  
+  public boolean isGroupMessage() {
+    return recipients != null && recipients.size() > 1;
+  }
+  
+  public List<Person> getRecipientsList() {
+    if (recipients == null) {
+      List<Person> rec = new LinkedList<Person>();
+      rec.add(from);
+      return rec;
+    } else {
+      return recipients;
+    }
   }
 
   public void setFrom(Person from) {

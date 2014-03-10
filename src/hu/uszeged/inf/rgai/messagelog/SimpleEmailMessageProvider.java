@@ -196,7 +196,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         }
 //        System.out.println("fromName -> " + fromName);
 //        System.out.println("fromEmail -> " + fromEmail);
-        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet, new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), date, Type.EMAIL));
+        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet,
+                new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), null, date, Type.EMAIL));
       }
     }
     inbox.close(true);
@@ -348,7 +349,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       String contentType = bp.getContentType().toLowerCase();
       // Give some initial date to content, to not return with null, so we can debug later
       if (content.length() == 0) {
-        content = new StringBuilder(bp.getContent().toString());
+//        content = new StringBuilder(bp.getContent().toString());
+        content = new StringBuilder("<this message should not occure...>");
       }
       
       if (contentType.indexOf("multipart/") != -1) {
