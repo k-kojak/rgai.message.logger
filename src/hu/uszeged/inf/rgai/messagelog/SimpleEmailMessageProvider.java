@@ -342,11 +342,12 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     StringBuilder content = new StringBuilder("");
     
 //    System.out.println("getContentOfMultipartMessageLevel -> " + level);
-    
+    boolean htmlFound = false;
     for (int j = 0; j < mp.getCount(); j++) {
       
       Part bp = mp.getBodyPart(j);
       String contentType = bp.getContentType().toLowerCase();
+      System.out.println("contentType -> " + contentType);
       // Give some initial date to content, to not return with null, so we can debug later
       if (content.length() == 0) {
 //        content = new StringBuilder(bp.getContent().toString());
@@ -355,9 +356,12 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       
       if (contentType.indexOf("multipart/") != -1) {
         content = new StringBuilder(getContentOfMultipartMessage((Multipart)(bp.getContent()), level + 1));
-      } else if (contentType.indexOf("text/plain") != -1 && content.length() == 0) {
-        content = new StringBuilder(bp.getContent().toString());
+      } else if (contentType.indexOf("text/plain") != -1) {
+        if (!htmlFound) {
+          content = new StringBuilder(bp.getContent().toString());
+        }
       } else if (contentType.indexOf("text/html") != -1) {
+        htmlFound = true;
         content = new StringBuilder(bp.getContent().toString());
         break;
       }

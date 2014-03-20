@@ -4,6 +4,8 @@ import hu.uszeged.inf.rgai.messagelog.SimpleEmailMessageProvider;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,12 +53,16 @@ public class EmailTest {
     
     // SIMPLE EMAIL
     SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
-    list = semp.getMessageList(0, 5);
-    for (MessageListElement mle : list) {
-      System.out.println(mle);
-      System.out.println(mle.getFrom());
-    }
-    System.out.println(semp.getMessage("1"));
+//    list = semp.getMessageList(5, 10);
+//    for (MessageListElement mle : list) {
+//      System.out.println(mle);
+//      System.out.println(mle.getFrom());
+//      System.out.println("");
+//    }
+    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
+    System.out.println(fms.toString());
+    System.out.println(fms.getContent());
+//    System.out.println(semp.getMessage("3258"));
 //    Set<EmailMessageRecipient> mr = new HashSet<EmailMessageRecipient>();
 //    mr.add(new EmailMessageRecipient("k. tamas", "tamas.kojedzinszky@gmail.com"));
 //    semp.sendMessage(mr, "my content, yiha...", "my subject, " + (Math.random()));
