@@ -5,6 +5,7 @@
 package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
+import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class MessageAtom implements Comparable<MessageAtom> {
   protected Person from;
   protected boolean isMe;
   protected MessageProvider.Type messageType;
-  protected List<File> attachments;
+  protected List<Attachment> attachments;
 
   public MessageAtom() {}
   
@@ -34,7 +35,8 @@ public class MessageAtom implements Comparable<MessageAtom> {
    * @param date the date of the message
    * @param attachments attachments if is there any, can be <code>null</code>
    */
-  public MessageAtom(String id, String subject, String content, Date date, Person from, boolean isMe, MessageProvider.Type type, List<File> attachments) {
+  public MessageAtom(String id, String subject, String content, Date date, Person from,
+          boolean isMe, MessageProvider.Type type, List<Attachment> attachments) {
     this.id = id;
     this.subject = subject;
     this.content = content;
@@ -77,11 +79,11 @@ public class MessageAtom implements Comparable<MessageAtom> {
     this.from = from;
   }
   
-  public List<File> getAttachments() {
+  public List<Attachment> getAttachments() {
     return attachments;
   }
 
-  public void setAttachments(List<File> attachments) {
+  public void setAttachments(List<Attachment> attachments) {
     this.attachments = attachments;
   }
   

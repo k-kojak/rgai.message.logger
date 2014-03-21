@@ -1,6 +1,7 @@
 package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;
@@ -15,7 +16,8 @@ public class FullSimpleMessage extends MessageAtom implements FullMessage {
 
   public FullSimpleMessage() {}
   
-  public FullSimpleMessage(String id, String subject, String content, Date date, Person from, boolean isMe, Type messageType, List<File> attachments) {
+  public FullSimpleMessage(String id, String subject, String content, Date date, Person from,
+          boolean isMe, Type messageType, List<Attachment> attachments) {
     super(id, subject, content, date, from, isMe, messageType, attachments);
   }
 

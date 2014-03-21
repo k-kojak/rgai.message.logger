@@ -3,6 +3,7 @@ package hu.uszeged.inf.rgai.messagelog;
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPInputStream;
 import com.sun.mail.smtp.SMTPTransport;
+import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
@@ -196,8 +197,13 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         }
 //        System.out.println("fromName -> " + fromName);
 //        System.out.println("fromEmail -> " + fromEmail);
-        emails.add(new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet,
-                new Person(fromEmail, fromName, MessageProvider.Type.EMAIL), null, date, Type.EMAIL));
+        Person fromPerson = new Person(fromEmail, fromName, MessageProvider.Type.EMAIL);
+        MessageListElement mle = new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet,
+                fromPerson, null, date, Type.EMAIL);
+        FullSimpleMessage fsm = new FullSimpleMessage(m.getMessageNumber() + "", subject,
+                content.getContent(), date, fromPerson, false, Type.EMAIL, content.getAttachmentList());
+        mle.setFullMessage(fsm);
+        emails.add(mle);
       }
     }
     inbox.close(true);
@@ -233,7 +239,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
 //    System.setProperty("javax.activation.debug", "true");
     StringBuilder content = new StringBuilder();
-    List<File> attachments = null;
+    List<Attachment> attachments = null;
     
     Object msg = fullMessage.getContent();
     
@@ -263,7 +269,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       } else*/ if (msg instanceof Multipart) {
         Multipart mp = (Multipart) msg;
         content = new StringBuilder(getContentOfMultipartMessage(mp, 0));
-//        attachments = getAttachmentsOfMultipartMessage(mp, 0);
+        attachments = getAttachmentsOfMultipartMessage(mp, true, 0);
         
       }/* else {
         System.out.println("Nem tudom 1...");
@@ -293,8 +299,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
    * @throws MessagingException
    * @throws IOException 
    */
-  private List<File> getAttachmentsOfMultipartMessage(Multipart mp, int level) throws MessagingException, IOException {
-    List<File> files = new LinkedList<File>();
+  private List<Attachment> getAttachmentsOfMultipartMessage(Multipart mp, boolean onlyInfo, int level) throws MessagingException, IOException {
+    List<Attachment> files = new LinkedList<Attachment>();
 
 //    System.out.println("\ngetAttachmentsOfMultipartMessageLevel -> " + level);
     
@@ -305,23 +311,25 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       
       if (!Part.ATTACHMENT.equalsIgnoreCase(bp.getDisposition())) {
         if (contentType.indexOf("multipart/") != -1) {
-          files.addAll(getAttachmentsOfMultipartMessage((Multipart)(bp.getContent()), level + 1));
+          files.addAll(getAttachmentsOfMultipartMessage((Multipart)(bp.getContent()), onlyInfo, level + 1));
         }
         continue;
       } else {
 //        System.out.println("Not ignoring...");
       }
-      
-      InputStream is = bp.getInputStream();
-      File f = new File(this.attachmentFolder + bp.getFileName());
-      FileOutputStream fos = new FileOutputStream(f);
-      byte[] buf = new byte[4096];
-      int bytesRead;
-      while((bytesRead = is.read(buf))!=-1) {
-          fos.write(buf, 0, bytesRead);
+      files.add(new Attachment(bp.getFileName(), bp.getSize()));
+      if (!onlyInfo) {
+        InputStream is = bp.getInputStream();
+        File f = new File(this.attachmentFolder + bp.getFileName());
+        FileOutputStream fos = new FileOutputStream(f);
+        byte[] buf = new byte[4096];
+        int bytesRead;
+        while((bytesRead = is.read(buf))!=-1) {
+            fos.write(buf, 0, bytesRead);
+        }
+        fos.close();
+//        files.add(f);
       }
-      fos.close();
-      files.add(f);
       // Give some initial date to content, to not return with null, so we can debug later
       
     }
@@ -347,7 +355,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       
       Part bp = mp.getBodyPart(j);
       String contentType = bp.getContentType().toLowerCase();
-      System.out.println("contentType -> " + contentType);
+//      System.out.println("contentType -> " + contentType);
       // Give some initial date to content, to not return with null, so we can debug later
       if (content.length() == 0) {
 //        content = new StringBuilder(bp.getContent().toString());

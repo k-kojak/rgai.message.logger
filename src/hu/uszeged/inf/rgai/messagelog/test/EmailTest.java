@@ -53,15 +53,16 @@ public class EmailTest {
     
     // SIMPLE EMAIL
     SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
-//    list = semp.getMessageList(5, 10);
-//    for (MessageListElement mle : list) {
-//      System.out.println(mle);
+    list = semp.getMessageList(0, 5);
+    for (MessageListElement mle : list) {
+      System.out.println(((FullSimpleMessage)mle.getFullMessage()).getAttachments());
+//      System.out.println(mle.get);
 //      System.out.println(mle.getFrom());
 //      System.out.println("");
-//    }
-    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
-    System.out.println(fms.toString());
-    System.out.println(fms.getContent());
+    }
+//    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
+//    System.out.println(fms.toString());
+//    System.out.println(fms.getContent());
 //    System.out.println(semp.getMessage("3258"));
 //    Set<EmailMessageRecipient> mr = new HashSet<EmailMessageRecipient>();
 //    mr.add(new EmailMessageRecipient("k. tamas", "tamas.kojedzinszky@gmail.com"));

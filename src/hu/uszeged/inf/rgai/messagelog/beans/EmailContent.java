@@ -11,9 +11,9 @@ import java.util.List;
 public class EmailContent {
   
   private String content;
-  private List<File> attachmentList;
+  private List<Attachment> attachmentList;
 
-  public EmailContent(String content, List<File> attachmentList) {
+  public EmailContent(String content, List<Attachment> attachmentList) {
     this.content = content;
     this.attachmentList = attachmentList;
   }
@@ -30,7 +30,7 @@ public class EmailContent {
     return content.substring(0, Math.min(content.length(), maxLength));
   }
 
-  public List<File> getAttachmentList() {
+  public List<Attachment> getAttachmentList() {
     return attachmentList;
   }
   

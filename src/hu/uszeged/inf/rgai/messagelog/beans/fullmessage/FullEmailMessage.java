@@ -1,6 +1,7 @@
 package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
+import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;
@@ -29,7 +30,7 @@ public class FullEmailMessage implements FullMessage {
     return title;
   }
 
-  public List<File> getAttachments() {
+  public List<Attachment> getAttachments() {
     return content.getAttachments();
   }
 
