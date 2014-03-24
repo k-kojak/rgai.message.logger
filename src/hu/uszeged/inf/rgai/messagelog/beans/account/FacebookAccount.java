@@ -1,13 +1,14 @@
 package hu.uszeged.inf.rgai.messagelog.beans.account;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import java.io.Serializable;
 
 /**
  * Class for Facebook account.
  * 
  * @author Tamas Kojedzinszky
  */
-public class FacebookAccount implements Account {
+public class FacebookAccount implements Account, Serializable {
   protected String displayName;
   protected String uniqueName;
   protected String id;

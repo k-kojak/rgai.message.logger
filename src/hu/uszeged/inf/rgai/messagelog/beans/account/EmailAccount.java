@@ -1,13 +1,14 @@
 package hu.uszeged.inf.rgai.messagelog.beans.account;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
+import java.io.Serializable;
 
 /**
  * Simple email account.
  * 
  * @author Tamas Kojedzinszky
  */
-public class EmailAccount implements Account {
+public class EmailAccount implements Account, Serializable {
   protected String email;
   protected String password;
   protected String imapAddress;
