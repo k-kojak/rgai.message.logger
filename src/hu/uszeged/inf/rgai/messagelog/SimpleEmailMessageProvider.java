@@ -417,6 +417,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     folder.open(Folder.READ_WRITE);
     
     Message ms = folder.getMessage(Integer.parseInt(id));
+//    ms.s
     
     List<Person> to = new LinkedList<Person>();
     
@@ -481,5 +482,16 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     }
     
     return sb.toString();
+  }
+
+  @Override
+  public void markMessageAsRead(String id) throws NoSuchProviderException, MessagingException, IOException {
+    Store store = this.getStore();
+    IMAPFolder folder;
+    folder = (IMAPFolder)store.getFolder("INBOX");
+    folder.open(Folder.READ_WRITE);
+    
+    Message ms = folder.getMessage(Integer.parseInt(id));
+    ms.setFlag(Flags.Flag.SEEN, true);
   }
 }

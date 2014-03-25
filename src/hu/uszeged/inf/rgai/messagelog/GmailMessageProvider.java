@@ -128,4 +128,9 @@ public class GmailMessageProvider implements MessageProvider {
           NoSuchProviderException, MessagingException, IOException {
     
   }
+
+  @Override
+  public void markMessageAsRead(String id) throws NoSuchProviderException, MessagingException, IOException {
+    // nothing to do here...
+  }
 }

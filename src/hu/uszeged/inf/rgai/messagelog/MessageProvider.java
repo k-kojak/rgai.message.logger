@@ -73,6 +73,26 @@ public interface MessageProvider {
    */
   public FullMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException;
   
+  /**
+   * Sets the status of a message to seen.
+   * 
+   * @param id the id of the message
+   * @throws NoSuchProviderException
+   * @throws MessagingException
+   * @throws IOException 
+   */
+  public void markMessageAsRead(String id) throws NoSuchProviderException, MessagingException, IOException;
+  
+  /**
+   * Sends a message to the given recipient with the given content.
+   * 
+   * @param to set of recipients
+   * @param content the content of the message
+   * @param subject subject of the message (optional)
+   * @throws NoSuchProviderException
+   * @throws MessagingException
+   * @throws IOException 
+   */
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
           throws NoSuchProviderException, MessagingException, IOException;
   
