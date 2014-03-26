@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
+import java.security.Security;
 import java.security.cert.CertPathValidatorException;
 import java.util.Date;
 import java.util.LinkedList;
@@ -85,18 +86,20 @@ public class SimpleEmailMessageProvider implements MessageProvider {
    */
   protected void setProperties(Properties props) {
     System.setProperty("java.net.preferIPv4Stack", "true");
-    props.put("mail.imaps.ssl.checkserveridentity", "false");
-    props.put("mail.imaps.ssl.trust", "*");
+    
     if (this.account.isSsl()) {
+      Security.setProperty("ssl.SocketFactory.provider", "hu.uszeged.inf.rgai.messagelog.MySSLSocketFactory");
       props.setProperty("mail.imap.port", "993");
       props.setProperty("mail.smtp.port", "465");
+      props.put("mail.imap.socketFactory.fallback", "false");
       props.setProperty("mail.store.protocol", "imaps");
     } else {
+      props.put("mail.imaps.ssl.checkserveridentity", "false");
+      props.put("mail.imaps.ssl.trust", "*");
       props.setProperty("mail.imap.port", "143");
       props.setProperty("mail.smtp.port", "25");
       props.setProperty("mail.store.protocol", "imap");
     }
-//    props.setProperty("mail.imaps.socketFactory.class", "hu.uszeged.inf.rgai.messagelog.trustmanager.MyTrustManager");
   }
   
   /**
@@ -450,7 +453,13 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     props.put("mail.smtps.auth","true");
     Session session = Session.getInstance(props, null);
     javax.mail.Message msg = new MimeMessage(session);
-    msg.setFrom(new InternetAddress(account.getEmail()));
+    
+    // FIXME: this is a VERY VERY UGRLY solution
+    if (account.getImapAddress().equals("mail.inf.u-szeged.hu")) {
+      msg.setFrom(new InternetAddress(account.getEmail() + "@inf.u-szeged.hu"));
+    } else {
+      msg.setFrom(new InternetAddress(account.getEmail()));
+    }
     
     String addressList = getAddressList(to);
 
@@ -459,7 +468,12 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     msg.setText(content);
 //    msg.setHeader("X-Mailer", "");
     msg.setSentDate(new Date());
-    SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
+    SMTPTransport t;
+    if (account.isSsl()) {
+      t = (SMTPTransport)session.getTransport("smtps");
+    } else {
+      t = (SMTPTransport)session.getTransport("smtp");
+    }
     t.connect(account.getSmtpAddress(), account.getEmail(), account.getPassword());
     t.sendMessage(msg, msg.getAllRecipients());
     t.close();

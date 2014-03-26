@@ -52,7 +52,8 @@ public class EmailTest {
     
     
     // SIMPLE EMAIL
-    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
+    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, false));
+    
     list = semp.getMessageList(0, 5);
     for (MessageListElement mle : list) {
       System.out.println(mle);
@@ -60,7 +61,7 @@ public class EmailTest {
 //      System.out.println(mle.getFrom());
 //      System.out.println("");
     }
-    semp.markMessageAsRead("501");
+//    semp.markMessageAsRead("501");
     
 //    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
 //    System.out.println(fms.toString());
@@ -77,7 +78,7 @@ public class EmailTest {
 //    recipients.add(new EmailMessageRecipient("kojak7", "kojak7@vipmail.hu"));
 ////    System.out.println("");
 //    semp.setTo2("kojak7@vipmail.hu");
-//    semp.sendMessage(recipients, "Content", "Subject...", null);
+//    semp.sendMessage(recipients, "Content", "Subject...");
     
   }
   
