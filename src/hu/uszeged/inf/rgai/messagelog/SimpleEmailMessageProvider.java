@@ -7,6 +7,7 @@ import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
+import hu.uszeged.inf.rgai.messagelog.beans.HtmlContent;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
@@ -151,7 +152,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       Message m = messages[i];
       EmailContent content = getMessageContent(m);
       
-      String snippet = content.getContent(snippetMaxLength);
+      String snippet = content.getContent(snippetMaxLength).toString();
       
       String subject = m.getSubject();
       if (subject != null) {
@@ -241,7 +242,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   protected EmailContent getMessageContent(Message fullMessage) throws MessagingException, IOException {
     
 //    System.setProperty("javax.activation.debug", "true");
-    StringBuilder content = new StringBuilder();
+    HtmlContent content = new HtmlContent();
     List<Attachment> attachments = null;
     
     Object msg = fullMessage.getContent();
@@ -257,7 +258,14 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           content.append(line);
         }
       } else {*/
-        content = new StringBuilder((String) msg);
+      if (fullMessage.isMimeType("text/html")) {
+        content = new HtmlContent((String) msg, HtmlContent.ContentType.TEXT_HTML);
+      } else if (fullMessage.isMimeType("text/plain")) {
+        content = new HtmlContent((String) msg, HtmlContent.ContentType.TEXT_PLAIN);
+      } else {
+        content = new HtmlContent((String) msg, HtmlContent.ContentType.TEXT);
+      }
+        
       /*}*/
     } else if (fullMessage.isMimeType("multipart/*")) {
       /*if (msg instanceof IMAPInputStream) {
@@ -271,7 +279,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         }
       } else*/ if (msg instanceof Multipart) {
         Multipart mp = (Multipart) msg;
-        content = new StringBuilder(getContentOfMultipartMessage(mp, 0));
+        content = getContentOfMultipartMessage(mp, 0);
         attachments = getAttachmentsOfMultipartMessage(mp, true, 0);
         
       }/* else {
@@ -285,12 +293,12 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       BufferedReader br = new BufferedReader(new InputStreamReader(dis));
       String line;
       while ((line = br.readLine()) != null) {
-        content.append(line);
+        content.getContent().append(line);
       }
     } else {
       System.out.println("Nem tudom 2");
     }
-    return new EmailContent(content.toString(), attachments);
+    return new EmailContent(content, attachments);
   }
   
   /**
@@ -349,8 +357,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
    * @throws MessagingException
    * @throws IOException 
    */
-  private String getContentOfMultipartMessage(Multipart mp, int level) throws MessagingException, IOException {
-    StringBuilder content = new StringBuilder("");
+  private HtmlContent getContentOfMultipartMessage(Multipart mp, int level) throws MessagingException, IOException {
+    HtmlContent content = new HtmlContent();
     
 //    System.out.println("getContentOfMultipartMessageLevel -> " + level);
     boolean htmlFound = false;
@@ -360,25 +368,25 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       String contentType = bp.getContentType().toLowerCase();
 //      System.out.println("contentType -> " + contentType);
       // Give some initial date to content, to not return with null, so we can debug later
-      if (content.length() == 0) {
+      if (content.getContent().length() == 0) {
 //        content = new StringBuilder(bp.getContent().toString());
-        content = new StringBuilder("<this message should not occure...>");
+        content = new HtmlContent("<this message should not occure...>", HtmlContent.ContentType.TEXT_PLAIN);
       }
       
       if (contentType.indexOf("multipart/") != -1) {
-        content = new StringBuilder(getContentOfMultipartMessage((Multipart)(bp.getContent()), level + 1));
+        content = getContentOfMultipartMessage((Multipart)(bp.getContent()), level + 1);
       } else if (contentType.indexOf("text/plain") != -1) {
         if (!htmlFound) {
-          content = new StringBuilder(bp.getContent().toString());
+          content = new HtmlContent(bp.getContent().toString(), HtmlContent.ContentType.TEXT_PLAIN);
         }
       } else if (contentType.indexOf("text/html") != -1) {
         htmlFound = true;
-        content = new StringBuilder(bp.getContent().toString());
+        content = new HtmlContent(bp.getContent().toString(), HtmlContent.ContentType.TEXT_HTML);
         break;
       }
     }
     
-    return content.toString();
+    return content;
   }
   
   /**
@@ -508,4 +516,6 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     Message ms = folder.getMessage(Integer.parseInt(id));
     ms.setFlag(Flags.Flag.SEEN, true);
   }
+  
+  
 }

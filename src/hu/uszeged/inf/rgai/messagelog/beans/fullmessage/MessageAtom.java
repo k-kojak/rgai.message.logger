@@ -6,6 +6,7 @@ package hu.uszeged.inf.rgai.messagelog.beans.fullmessage;
 
 import hu.uszeged.inf.rgai.messagelog.MessageProvider;
 import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
+import hu.uszeged.inf.rgai.messagelog.beans.HtmlContent;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import java.io.File;
 import java.util.Date;
@@ -19,7 +20,7 @@ public class MessageAtom implements Comparable<MessageAtom> {
   
   protected String id;
   protected String subject;
-  protected String content;
+  protected HtmlContent content;
   protected Date date;
   protected Person from;
   protected boolean isMe;
@@ -31,11 +32,11 @@ public class MessageAtom implements Comparable<MessageAtom> {
   /**
    * Constructor for an atom message.
    * 
-   * @param content the content of the message
+   * @param content the content of the message with content mime type
    * @param date the date of the message
    * @param attachments attachments if is there any, can be <code>null</code>
    */
-  public MessageAtom(String id, String subject, String content, Date date, Person from,
+  public MessageAtom(String id, String subject, HtmlContent content, Date date, Person from,
           boolean isMe, MessageProvider.Type type, List<Attachment> attachments) {
     this.id = id;
     this.subject = subject;
@@ -55,11 +56,11 @@ public class MessageAtom implements Comparable<MessageAtom> {
     this.subject = subject;
   }
 
-  public String getContent() {
+  public HtmlContent getContent() {
     return content;
   }
 
-  public void setContent(String content) {
+  public void setContent(HtmlContent content) {
     this.content = content;
   }
 

@@ -52,11 +52,13 @@ public class EmailTest {
     
     
     // SIMPLE EMAIL
-    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, false));
+    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
     
-    list = semp.getMessageList(0, 5);
+    list = semp.getMessageList(0, 20);
     for (MessageListElement mle : list) {
       System.out.println(mle);
+      FullSimpleMessage fsm = (FullSimpleMessage)mle.getFullMessage();
+      System.out.println(fsm.getContent().getContentType());
 //      System.out.println(mle.get);
 //      System.out.println(mle.getFrom());
 //      System.out.println("");

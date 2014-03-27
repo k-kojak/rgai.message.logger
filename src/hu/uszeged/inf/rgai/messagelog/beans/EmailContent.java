@@ -1,6 +1,5 @@
 package hu.uszeged.inf.rgai.messagelog.beans;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -10,24 +9,24 @@ import java.util.List;
  */
 public class EmailContent {
   
-  private String content;
+  private HtmlContent content;
   private List<Attachment> attachmentList;
 
-  public EmailContent(String content, List<Attachment> attachmentList) {
+  public EmailContent(HtmlContent content, List<Attachment> attachmentList) {
     this.content = content;
     this.attachmentList = attachmentList;
   }
   
-  public EmailContent(String content) {
+  public EmailContent(HtmlContent content) {
     this(content, null);
   }
 
-  public String getContent() {
+  public HtmlContent getContent() {
     return content;
   }
   
-  public String getContent(int maxLength) {
-    return content.substring(0, Math.min(content.length(), maxLength));
+  public HtmlContent getContent(int maxLength) {
+    return new HtmlContent(content.getContent().substring(0, Math.min(content.getContent().length(), maxLength)), content.getContentType());
   }
 
   public List<Attachment> getAttachmentList() {
