@@ -156,7 +156,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       
       String subject = m.getSubject();
       if (subject != null) {
-        subject = replaceUnknownCharacterType(subject);
+        subject = prepareMimeFieldToDecode(subject);
         try {
           subject = MimeUtility.decodeText(subject);
         } catch (java.io.UnsupportedEncodingException ex) {
@@ -166,13 +166,18 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       Date date = m.getSentDate();
       String from = null;
       if (m.getFrom() != null) {
+        
+        
+
         from = m.getFrom()[0].toString();
-        from = replaceUnknownCharacterType(from);
+        from = prepareMimeFieldToDecode(from);
+        System.out.println("from: " + from);
       }
       if (from != null) {
         try {
           from = MimeUtility.decodeText(from);
         } catch (java.io.UnsupportedEncodingException ex) {
+          ex.printStackTrace();
         }
       }
       
@@ -201,7 +206,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         }
 //        System.out.println("fromName -> " + fromName);
 //        System.out.println("fromEmail -> " + fromEmail);
-        Person fromPerson = new Person(fromEmail, fromName, MessageProvider.Type.EMAIL);
+        Person fromPerson = new Person(fromEmail.trim(), fromName.trim(), MessageProvider.Type.EMAIL);
         MessageListElement mle = new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet,
                 fromPerson, null, date, Type.EMAIL);
         FullSimpleMessage fsm = new FullSimpleMessage(m.getMessageNumber() + "", subject,
@@ -217,14 +222,25 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   }
   
   /**
-   * Replaces the "x-unknown" encoding type with "iso-8859-2" to be able to decode the mime string.
+   * Replaces the "x-unknown" encoding type with "iso-8859-2" to be able to decode the mime
+   * string and removes the quotation marks if there is any.
    * 
    * @param text a mime encoded raw text
    * @return a changed raw text with corrected encoding
    */
-  private static String replaceUnknownCharacterType(String text) {
+  private static String prepareMimeFieldToDecode(String text) {
+    text = text.trim();
     if (text.indexOf("=?x-unknown?") != -1) {
       text = text.replace("x-unknown", "iso-8859-2");
+    }
+    int quotStart = text.indexOf("\"");
+    int quotEnd = text.lastIndexOf("\"");
+    if (quotStart != -1 && quotStart == 0 && quotStart != quotEnd) {
+      StringBuilder sb = new StringBuilder(text);
+      // replacing the starting quot
+      sb.replace(0, 1, "");
+      sb.replace(quotEnd - 1, quotEnd, "");
+      text = sb.toString();
     }
     return text;
   }
@@ -398,7 +414,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   private static Person getPersonFromAddress(Address a) {
     String ad = a.toString();
     
-    ad = replaceUnknownCharacterType(ad);
+    ad = prepareMimeFieldToDecode(ad);
     try {
       ad = MimeUtility.decodeText(ad);
     } catch (UnsupportedEncodingException ex) {
