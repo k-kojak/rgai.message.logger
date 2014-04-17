@@ -166,12 +166,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       Date date = m.getSentDate();
       String from = null;
       if (m.getFrom() != null) {
-        
-        
-
         from = m.getFrom()[0].toString();
         from = prepareMimeFieldToDecode(from);
-        System.out.println("from: " + from);
       }
       if (from != null) {
         try {
