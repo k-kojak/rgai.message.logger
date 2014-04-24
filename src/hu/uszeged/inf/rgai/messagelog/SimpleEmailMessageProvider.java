@@ -14,6 +14,7 @@ import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
 
   private EmailAccount account;
   private String attachmentFolder = "../files/";
+  private AttachmentProgressUpdate progressUpdate = null;
 
   /**
    * Constructs a SimpleEmailMessageProvider object.
@@ -125,6 +127,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
     
     return store;
+  }
+  
+  public void setAttachmentProgressUpdateListener(AttachmentProgressUpdate progressUpdate) {
+    this.progressUpdate = progressUpdate;
   }
   
   public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException, SSLHandshakeException,
@@ -216,6 +222,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
     return emails;
   }
+  
+  
   
   /**
    * Replaces the "x-unknown" encoding type with "iso-8859-2" to be able to decode the mime
@@ -359,6 +367,8 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
     return files;
   }
+
+  
   
   /**
    * Returns the pure String content of a Mime Multipart message.
@@ -462,6 +472,51 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     return new FullSimpleMessage(id, subject, content.getContent(), date, from, false, MessageProvider.Type.EMAIL, null);
     
   }
+  
+  public byte[] getAttachmentOfMessage(String messageId, String attachmentId) throws NoSuchProviderException, MessagingException, IOException {
+    Store store = this.getStore();
+    IMAPFolder folder;
+    folder = (IMAPFolder)store.getFolder("INBOX");
+    folder.open(Folder.READ_WRITE);
+    
+    Message ms = folder.getMessage(Integer.parseInt(messageId));
+    
+    return getMessageAttachment(ms, attachmentId);
+    
+  }
+  
+  private byte[] getMessageAttachment(Message message, String attachmentId) throws IOException, MessagingException {
+    Object msg = message.getContent();
+    ByteArrayOutputStream buffer = null;
+    if (msg instanceof Multipart) {
+      Multipart mp = (Multipart) msg;
+      for (int j = 0; j < mp.getCount(); j++) {
+        Part bp = mp.getBodyPart(j);
+        if (!Part.ATTACHMENT.equalsIgnoreCase(bp.getDisposition())) {
+          continue;
+        }
+        if (bp.getFileName().equals(attachmentId)) {
+          
+          InputStream is = bp.getInputStream();
+          buffer = new ByteArrayOutputStream();
+          int nRead;
+          byte[] data = new byte[65536];
+          int fullSize = bp.getSize();
+          while ((nRead = is.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, nRead);
+            if (progressUpdate != null) {
+              progressUpdate.onProgressUpdate(buffer.size() * 100 / fullSize);
+            }
+          }
+          buffer.flush();
+          is.close();
+          return buffer.toByteArray();
+        }
+      }
+    }
+    return null;
+    
+  }
 
   @Override
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject) throws
@@ -527,6 +582,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     
     Message ms = folder.getMessage(Integer.parseInt(id));
     ms.setFlag(Flags.Flag.SEEN, true);
+  }
+  
+  public interface AttachmentProgressUpdate {
+    public void onProgressUpdate(int progress);
   }
   
   

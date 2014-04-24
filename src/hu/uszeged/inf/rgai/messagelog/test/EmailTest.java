@@ -7,6 +7,7 @@ import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.cert.CertPathValidatorException;
@@ -16,6 +17,7 @@ import java.util.Properties;
 import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
+import net.htmlparser.jericho.Source;
 
 /**
  *
@@ -53,13 +55,25 @@ public class EmailTest {
     
     // SIMPLE EMAIL
     SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
+    semp.setAttachmentProgressUpdateListener(new SimpleEmailMessageProvider.AttachmentProgressUpdate() {
+
+      @Override
+      public void onProgressUpdate(int progress) {
+        System.out.println("PROGRESS: " + progress);
+      }
+    });
+//    list = semp.getMessageList(0, 3);
+//    for (MessageListElement mle : list) {
+//      System.out.println(mle);
+//      System.out.println(mle.getFrom());
+//      System.out.println("");
+//    }
     
-    list = semp.getMessageList(0, 5);
-    for (MessageListElement mle : list) {
-      System.out.println(mle);
-      System.out.println(mle.getFrom());
-      System.out.println("");
-    }
+    byte[] data = semp.getAttachmentOfMessage("3471", "KTP_9754.jpg");
+    FileOutputStream fos = new FileOutputStream("./img.jpg");
+    fos.write(data);
+    fos.close();
+    
 //    semp.markMessageAsRead("501");
     
 //    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
@@ -77,7 +91,11 @@ public class EmailTest {
 //    recipients.add(new EmailMessageRecipient("kojak7", "kojak7@vipmail.hu"));
 ////    System.out.println("");
 //    semp.setTo2("kojak7@vipmail.hu");
-//    semp.sendMessage(recipients, "Content", "Subject...");
+//    FullSimpleMessage fsm = (FullSimpleMessage)list.get(0).getFullMessage();
+//    System.out.println(fsm.getContent().getContent());
+//    Source source = new Source(fsm.getContent().getContent());
+//    System.out.println(source.getRenderer().toString());
+//    semp.sendMessage(recipients, "a " + source.getRenderer().toString(), "Subject...");
     
   }
   
