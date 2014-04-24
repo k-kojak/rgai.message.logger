@@ -7,9 +7,9 @@ package hu.uszeged.inf.rgai.messagelog.beans;
  */
 public class Attachment {
   private String fileName;
-  private int size; // in bytes
+  private long size; // in bytes
 
-  public Attachment(String fileName, int size) {
+  public Attachment(String fileName, long size) {
     this.fileName = fileName;
     this.size = size;
   }
@@ -18,8 +18,12 @@ public class Attachment {
     return fileName;
   }
 
-  public int getSize() {
+  public long getSize() {
     return size;
+  }
+  
+  public void setSize(long size) {
+    this.size = size;
   }
   
 }

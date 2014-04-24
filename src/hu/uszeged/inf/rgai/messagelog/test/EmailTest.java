@@ -62,14 +62,14 @@ public class EmailTest {
         System.out.println("PROGRESS: " + progress);
       }
     });
-//    list = semp.getMessageList(0, 3);
-//    for (MessageListElement mle : list) {
-//      System.out.println(mle);
-//      System.out.println(mle.getFrom());
-//      System.out.println("");
-//    }
+    list = semp.getMessageList(1, 5);
+    for (MessageListElement mle : list) {
+      System.out.println(mle);
+      System.out.println(mle.getFrom());
+      System.out.println("");
+    }
     
-    byte[] data = semp.getAttachmentOfMessage("3471", "KTP_9754.jpg");
+    byte[] data = semp.getAttachmentOfMessage("520", "dreamer_v_1_by_brenditaworks-d5w6bmo.jpg");
     FileOutputStream fos = new FileOutputStream("./img.jpg");
     fos.write(data);
     fos.close();

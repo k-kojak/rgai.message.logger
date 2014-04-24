@@ -48,6 +48,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import javax.net.ssl.SSLHandshakeException;
+import net.htmlparser.jericho.Source;
 
 /**
  * Implements a simple email message providing via IMAP protocol.
@@ -96,13 +97,16 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       props.setProperty("mail.smtp.port", "465");
       props.put("mail.imap.socketFactory.fallback", "false");
       props.setProperty("mail.store.protocol", "imaps");
+      props.put("mail.imaps.fetchsize", "819200");
     } else {
       props.put("mail.imaps.ssl.checkserveridentity", "false");
       props.put("mail.imaps.ssl.trust", "*");
       props.setProperty("mail.imap.port", "143");
       props.setProperty("mail.smtp.port", "25");
       props.setProperty("mail.store.protocol", "imap");
+      props.put("mail.imap.fetchsize", "819200");
     }
+    
   }
   
   /**
@@ -158,7 +162,14 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       Message m = messages[i];
       EmailContent content = getMessageContent(m);
       
-      String snippet = content.getContent(snippetMaxLength).toString();
+      String snippet;
+      try {
+        Source source = new Source(content.getContent().getContent());
+        String decoded = source.getRenderer().toString();
+        snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
+      } catch (StackOverflowError so) {
+        snippet = "<no snippet available>";
+      }
       
       String subject = m.getSubject();
       if (subject != null) {
@@ -167,6 +178,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           subject = MimeUtility.decodeText(subject);
         } catch (java.io.UnsupportedEncodingException ex) {
         }
+      } else if (snippet.trim().length() > 0) {
+        subject = snippet;
+      } else {
+        subject = "<No subject>";
       }
       boolean seen = m.isSet(Flags.Flag.SEEN);
       Date date = m.getSentDate();
