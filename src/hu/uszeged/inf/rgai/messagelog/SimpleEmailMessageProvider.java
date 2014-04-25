@@ -162,14 +162,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       Message m = messages[i];
       EmailContent content = getMessageContent(m);
       
-      String snippet;
-      try {
-        Source source = new Source(content.getContent().getContent());
-        String decoded = source.getRenderer().toString();
-        snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
-      } catch (StackOverflowError so) {
-        snippet = "<no snippet available>";
-      }
+     
       
       String subject = m.getSubject();
       if (subject != null) {
@@ -178,10 +171,18 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           subject = MimeUtility.decodeText(subject);
         } catch (java.io.UnsupportedEncodingException ex) {
         }
-      } else if (snippet.trim().length() > 0) {
-        subject = snippet;
       } else {
-        subject = "<No subject>";
+        String snippet = null;
+        try {
+          Source source = new Source(content.getContent().getContent());
+          String decoded = source.getRenderer().toString();
+          snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
+          subject = snippet;
+        } catch (StackOverflowError so) {
+        }
+        if (subject == null) {
+          subject = "<No subject>";
+        }
       }
       boolean seen = m.isSet(Flags.Flag.SEEN);
       Date date = m.getSentDate();
@@ -224,7 +225,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
 //        System.out.println("fromName -> " + fromName);
 //        System.out.println("fromEmail -> " + fromEmail);
         Person fromPerson = new Person(fromEmail.trim(), fromName.trim(), MessageProvider.Type.EMAIL);
-        MessageListElement mle = new MessageListElement(m.getMessageNumber() + "", seen, subject, snippet,
+        MessageListElement mle = new MessageListElement(m.getMessageNumber() + "", seen, subject, "",
                 fromPerson, null, date, Type.EMAIL);
         FullSimpleMessage fsm = new FullSimpleMessage(m.getMessageNumber() + "", subject,
                 content.getContent(), date, fromPerson, false, Type.EMAIL, content.getAttachmentList());
