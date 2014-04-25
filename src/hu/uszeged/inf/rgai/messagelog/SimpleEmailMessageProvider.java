@@ -172,11 +172,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         } catch (java.io.UnsupportedEncodingException ex) {
         }
       } else {
-        String snippet = null;
         try {
           Source source = new Source(content.getContent().getContent());
           String decoded = source.getRenderer().toString();
-          snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
+          String snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
           subject = snippet;
         } catch (StackOverflowError so) {
         }

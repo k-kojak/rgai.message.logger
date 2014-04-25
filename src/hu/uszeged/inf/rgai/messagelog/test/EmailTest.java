@@ -55,24 +55,24 @@ public class EmailTest {
     
     // SIMPLE EMAIL
     SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp, true));
-    semp.setAttachmentProgressUpdateListener(new SimpleEmailMessageProvider.AttachmentProgressUpdate() {
-
-      @Override
-      public void onProgressUpdate(int progress) {
-        System.out.println("PROGRESS: " + progress);
-      }
-    });
-    list = semp.getMessageList(1, 5);
+//    semp.setAttachmentProgressUpdateListener(new SimpleEmailMessageProvider.AttachmentProgressUpdate() {
+//
+//      @Override
+//      public void onProgressUpdate(int progress) {
+//        System.out.println("PROGRESS: " + progress);
+//      }
+//    });
+    list = semp.getMessageList(0, 15);
     for (MessageListElement mle : list) {
       System.out.println(mle);
       System.out.println(mle.getFrom());
       System.out.println("");
     }
     
-    byte[] data = semp.getAttachmentOfMessage("520", "dreamer_v_1_by_brenditaworks-d5w6bmo.jpg");
-    FileOutputStream fos = new FileOutputStream("./img.jpg");
-    fos.write(data);
-    fos.close();
+//    byte[] data = semp.getAttachmentOfMessage("520", "dreamer_v_1_by_brenditaworks-d5w6bmo.jpg");
+//    FileOutputStream fos = new FileOutputStream("./img.jpg");
+//    fos.write(data);
+//    fos.close();
     
 //    semp.markMessageAsRead("501");
     
