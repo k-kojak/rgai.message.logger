@@ -62,17 +62,19 @@ public class EmailTest {
 //        System.out.println("PROGRESS: " + progress);
 //      }
 //    });
-    list = semp.getMessageList(0, 15);
+    list = semp.getMessageList(0, 3);
     for (MessageListElement mle : list) {
       System.out.println(mle);
       System.out.println(mle.getFrom());
+      FullSimpleMessage fsm = (FullSimpleMessage)mle.getFullMessage();
+      System.out.println(fsm.getAttachments());
       System.out.println("");
     }
     
-//    byte[] data = semp.getAttachmentOfMessage("520", "dreamer_v_1_by_brenditaworks-d5w6bmo.jpg");
-//    FileOutputStream fos = new FileOutputStream("./img.jpg");
-//    fos.write(data);
-//    fos.close();
+    byte[] data = semp.getAttachmentOfMessage("3503", "Meghívó_FuturICT.hu_Kutatásmenedzsment_képzés_2014. május.pdf");
+    FileOutputStream fos = new FileOutputStream("./asd.pdf");
+    fos.write(data);
+    fos.close();
     
 //    semp.markMessageAsRead("501");
     

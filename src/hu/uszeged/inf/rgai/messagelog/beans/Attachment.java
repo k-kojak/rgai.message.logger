@@ -25,5 +25,10 @@ public class Attachment {
   public void setSize(long size) {
     this.size = size;
   }
+
+  @Override
+  public String toString() {
+    return "Attachment{" + "fileName=" + fileName + ", size=" + size + '}';
+  }
   
 }

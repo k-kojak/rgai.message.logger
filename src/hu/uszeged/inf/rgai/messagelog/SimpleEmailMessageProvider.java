@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
+import java.nio.charset.CharacterCodingException;
 import java.security.Security;
 import java.security.cert.CertPathValidatorException;
 import java.util.Date;
@@ -30,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.mail.Address;
@@ -363,7 +366,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       } else {
 //        System.out.println("Not ignoring...");
       }
-      files.add(new Attachment(bp.getFileName(), bp.getSize()));
+      files.add(new Attachment(/*MimeUtility.decodeText(*/bp.getFileName()/*)*/, bp.getSize()));
       if (!onlyInfo) {
         InputStream is = bp.getInputStream();
         File f = new File(this.attachmentFolder + bp.getFileName());
@@ -414,7 +417,11 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         content = getContentOfMultipartMessage((Multipart)(bp.getContent()), level + 1);
       } else if (contentType.indexOf("text/plain") != -1) {
         if (!htmlFound) {
-          content = new HtmlContent(bp.getContent().toString(), HtmlContent.ContentType.TEXT_PLAIN);
+          try {
+            content = new HtmlContent(bp.getContent().toString(), HtmlContent.ContentType.TEXT_PLAIN);
+          } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(SimpleEmailMessageProvider.class.getName()).log(Level.SEVERE, null, ex);
+          }
         }
       } else if (contentType.indexOf("text/html") != -1) {
         htmlFound = true;
@@ -510,7 +517,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
         if (!Part.ATTACHMENT.equalsIgnoreCase(bp.getDisposition())) {
           continue;
         }
-        if (bp.getFileName().equals(attachmentId)) {
+        if (MimeUtility.decodeText(bp.getFileName()).equals(attachmentId)) {
           
           InputStream is = bp.getInputStream();
           buffer = new ByteArrayOutputStream();
