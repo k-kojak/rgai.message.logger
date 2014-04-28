@@ -366,7 +366,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       } else {
 //        System.out.println("Not ignoring...");
       }
-      files.add(new Attachment(/*MimeUtility.decodeText(*/bp.getFileName()/*)*/, bp.getSize()));
+      files.add(new Attachment(MimeUtility.decodeText(bp.getFileName()), bp.getSize()));
       if (!onlyInfo) {
         InputStream is = bp.getInputStream();
         File f = new File(this.attachmentFolder + bp.getFileName());
