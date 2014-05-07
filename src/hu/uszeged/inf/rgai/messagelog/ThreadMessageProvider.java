@@ -3,6 +3,7 @@ package hu.uszeged.inf.rgai.messagelog;
 
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import java.io.IOException;
+import java.util.Set;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 

@@ -90,16 +90,20 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   private Store getStore(EmailAccount account) throws MessagingException {
     Store store = null;
     if (connections == null) {
+      System.out.println("CREATING STORE CONTAINER");
       connections = new HashMap<EmailAccount, Store>();
     } else {
       if (connections.containsKey(account)) {
         store = connections.get(account);
+        System.out.println("STORE EXISTS");
       }
     }
     if (store == null) {
+      System.out.println("CREATING STORE");
       store = getStore();
       connections.put(account, store);
     } else if (!store.isConnected()) {
+      System.out.println("RECONNECTING STORE");
       store = getStore();
       connections.put(account, store);
     } else {
@@ -163,13 +167,14 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     this.progressUpdate = progressUpdate;
   }
   
-  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException, SSLHandshakeException,
+  @Override
+  public List<MessageListElement> getMessageList(int offset, int limit, Set<MessageListElement> loadedMessages) throws CertPathValidatorException, SSLHandshakeException,
           ConnectException, NoSuchProviderException, UnknownHostException, IOException, MessagingException, AuthenticationFailedException {
-    return getMessageList(offset, limit, 20);
+    return getMessageList(offset, limit, loadedMessages, 20);
   }
   
   @Override
-  public List<MessageListElement> getMessageList(int offset, int limit, int snippetMaxLength)
+  public List<MessageListElement> getMessageList(int offset, int limit, Set<MessageListElement> loadedMessages, int snippetMaxLength)
           throws CertPathValidatorException, SSLHandshakeException, ConnectException,
           NoSuchProviderException, UnknownHostException, IOException, MessagingException,
           AuthenticationFailedException {
@@ -186,30 +191,10 @@ public class SimpleEmailMessageProvider implements MessageProvider {
 
     for (int i = messages.length - 1; i >= 0; i--) {
       Message m = messages[i];
-      EmailContent content = getMessageContent(m);
+      Flags flags = m.getFlags();
+      boolean seen = flags.contains(Flags.Flag.SEEN);
       
-     
       
-      String subject = m.getSubject();
-      if (subject != null) {
-        subject = prepareMimeFieldToDecode(subject);
-        try {
-          subject = MimeUtility.decodeText(subject);
-        } catch (java.io.UnsupportedEncodingException ex) {
-        }
-      } else {
-        try {
-          Source source = new Source(content.getContent().getContent());
-          String decoded = source.getRenderer().toString();
-          String snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
-          subject = snippet;
-        } catch (StackOverflowError so) {
-        }
-        if (subject == null) {
-          subject = "<No subject>";
-        }
-      }
-      boolean seen = m.isSet(Flags.Flag.SEEN);
       Date date = m.getSentDate();
       String from = null;
       if (m.getFrom() != null) {
@@ -247,9 +232,42 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           fromName = from;
           fromEmail = from;
         }
+        Person fromPerson = new Person(fromEmail.trim(), fromName.trim(), MessageProvider.Type.EMAIL);
+        
+        
+        MessageListElement testerElement = new MessageListElement(m.getMessageNumber() + "", seen, fromPerson, date, Type.EMAIL, true);
+        if (MessageProvider.Helper.isMessageLoaded(loadedMessages, testerElement)) {
+          emails.add(testerElement);
+          continue;
+        }/* else {
+          System.out.println("adding: new Date("+ date.getTime() +"l), \""+ fromEmail +"\")");
+        }*/
+        
+        EmailContent content = getMessageContent(m);
+        
+        String subject = m.getSubject();
+        if (subject != null) {
+          subject = prepareMimeFieldToDecode(subject);
+          try {
+            subject = MimeUtility.decodeText(subject);
+          } catch (java.io.UnsupportedEncodingException ex) {
+          }
+        } else {
+          try {
+            Source source = new Source(content.getContent().getContent());
+            String decoded = source.getRenderer().toString();
+            String snippet = decoded.substring(0, Math.min(snippetMaxLength, decoded.length()));
+            subject = snippet;
+          } catch (StackOverflowError so) {
+          }
+          if (subject == null) {
+            subject = "<No subject>";
+          }
+        }
+        
 //        System.out.println("fromName -> " + fromName);
 //        System.out.println("fromEmail -> " + fromEmail);
-        Person fromPerson = new Person(fromEmail.trim(), fromName.trim(), MessageProvider.Type.EMAIL);
+        
         MessageListElement mle = new MessageListElement(m.getMessageNumber() + "", seen, subject, "",
                 fromPerson, null, date, Type.EMAIL);
         FullSimpleMessage fsm = new FullSimpleMessage(m.getMessageNumber() + "", subject,

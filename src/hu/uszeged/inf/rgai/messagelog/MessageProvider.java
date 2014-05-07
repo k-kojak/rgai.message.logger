@@ -1,13 +1,15 @@
 package hu.uszeged.inf.rgai.messagelog;
 
-import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.security.cert.CertPathValidatorException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.mail.AuthenticationFailedException;
@@ -28,6 +30,7 @@ public interface MessageProvider {
    * 
    * @param offset the offset of the queried messages
    * @param limit the limit of queried messages
+   * @param loadedMessages the list of message that already loaded
    * @return List of MessageListElement objects, the list of messages
    * @throws CertPathValidatorException
    * @throws SSLHandshakeException
@@ -38,7 +41,7 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws AuthenticationFailedException 
    */
-  public List<MessageListElement> getMessageList(int offset, int limit) throws CertPathValidatorException,
+  public List<MessageListElement> getMessageList(int offset, int limit, Set<MessageListElement> loadedMessages) throws CertPathValidatorException,
           SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException,
           IOException, MessagingException, AuthenticationFailedException;
   
@@ -47,6 +50,7 @@ public interface MessageProvider {
    * 
    * @param offset the offset of the queried messages
    * @param limit the limit of queried messages
+   * @param loadedMessages 
    * @param snippetMaxLength the max length of the snippet
    * @return List of MessageListElement objects, the list of messages
    * @throws CertPathValidatorException
@@ -58,7 +62,7 @@ public interface MessageProvider {
    * @throws MessagingException
    * @throws AuthenticationFailedException 
    */
-  public List<MessageListElement> getMessageList(int offset, int limit, int snippetMaxLength) throws CertPathValidatorException,
+  public List<MessageListElement> getMessageList(int offset, int limit, Set<MessageListElement> loadedMessages, int snippetMaxLength) throws CertPathValidatorException,
           SSLHandshakeException, ConnectException, NoSuchProviderException, UnknownHostException,
           IOException, MessagingException, AuthenticationFailedException;
   
@@ -96,4 +100,15 @@ public interface MessageProvider {
   public void sendMessage(Set<? extends MessageRecipient> to, String content, String subject)
           throws NoSuchProviderException, MessagingException, IOException;
   
+  public static class Helper {
+    
+    public static boolean isMessageLoaded(Set<MessageListElement> messages, MessageListElement message) {
+      for (MessageListElement mle : messages) {
+        if (mle.getId().equals(message.getId()) && mle.getDate().equals(message.getDate()) && mle.getFrom().getId().equals(message.getFrom().getId())) {
+          return true;
+        }
+      }
+      return false;
+    }
+  }
 }

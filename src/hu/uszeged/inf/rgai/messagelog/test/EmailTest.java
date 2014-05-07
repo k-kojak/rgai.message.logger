@@ -1,9 +1,11 @@
 package hu.uszeged.inf.rgai.messagelog.test;
 
+import hu.uszeged.inf.rgai.messagelog.MessageProvider;
 import hu.uszeged.inf.rgai.messagelog.SimpleEmailMessageProvider;
 import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
+import hu.uszeged.inf.rgai.messagelog.beans.Person;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import java.io.FileInputStream;
@@ -11,10 +13,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.cert.CertPathValidatorException;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
 import net.htmlparser.jericho.Source;
@@ -62,21 +68,52 @@ public class EmailTest {
 //        System.out.println("PROGRESS: " + progress);
 //      }
 //    });
-    list = semp.getMessageList(0, 3);
-    for (MessageListElement mle : list) {
-      System.out.println(mle);
-      System.out.println(mle.getFrom());
-      FullSimpleMessage fsm = (FullSimpleMessage)mle.getFullMessage();
-      System.out.println(fsm.getAttachments());
-      System.out.println("");
-    }
+    Set<MessageListElement> loadedMsgs = new HashSet<MessageListElement>();
+    loadedMsgs.add(new MessageListElement("795", true, "", "", -1, new Person("tamas.kojedzinszky@gmail.com", "", MessageProvider.Type.SMS), null, new Date(1399469199000l), MessageProvider.Type.EMAIL, true));
+    loadedMsgs.add(new MessageListElement("794", true, "", "", -1, new Person("messages-noreply@linkedin.com", "", MessageProvider.Type.SMS), null, new Date(1399464534000l), MessageProvider.Type.EMAIL, true));
+    loadedMsgs.add(new MessageListElement("793", true, "", "", -1, new Person("member@linkedin.com", "", MessageProvider.Type.SMS), null, new Date(1399460225000l), MessageProvider.Type.EMAIL, true));
+    loadedMsgs.add(new MessageListElement("792", true, "", "", -1, new Person("hit-reply@linkedin.com", "", MessageProvider.Type.SMS), null, new Date(1399460207000l), MessageProvider.Type.EMAIL, true));
+    loadedMsgs.add(new MessageListElement("791", true, "", "", -1, new Person("messages-noreply@linkedin.com", "", MessageProvider.Type.SMS), null, new Date(1399453332000l), MessageProvider.Type.EMAIL, true));
+//    for (int i = 0; i < 5; i++) {
+      list = semp.getMessageList(0, 5, loadedMsgs);
+      for (MessageListElement mle : list) {
+        System.out.println(mle);
+        System.out.println(mle.getFrom());
+//        FullSimpleMessage fsm = (FullSimpleMessage)mle.getFullMessage();
+//        System.out.println(fsm.getAttachments());
+        System.out.println("");
+      }
+//    }
     
-    byte[] data = semp.getAttachmentOfMessage("3503", "Meghívó_FuturICT.hu_Kutatásmenedzsment_képzés_2014. május.pdf");
-    FileOutputStream fos = new FileOutputStream("./asd.pdf");
-    fos.write(data);
-    fos.close();
+//    System.out.println("SLEEP SOME...");
+//    try {
+//      Thread.sleep(5000);
+//    } catch (InterruptedException ex) {
+//      Logger.getLogger(EmailTest.class.getName()).log(Level.SEVERE, null, ex);
+//    }
+      
+    
+    
+    
+//    byte[] data = semp.getAttachmentOfMessage("3503", "Meghívó_FuturICT.hu_Kutatásmenedzsment_képzés_2014. május.pdf");
+//    FileOutputStream fos = new FileOutputStream("./asd.pdf");
+//    fos.write(data);
+//    fos.close();
+    
+    
+    
+    
+    
+    
     
 //    semp.markMessageAsRead("501");
+    
+    
+    
+    
+    
+    
+    
     
 //    FullSimpleMessage fms = (FullSimpleMessage) semp.getMessage("3258");
 //    System.out.println(fms.toString());
@@ -85,8 +122,8 @@ public class EmailTest {
 //    Set<EmailMessageRecipient> mr = new HashSet<EmailMessageRecipient>();
 //    mr.add(new EmailMessageRecipient("k. tamas", "tamas.kojedzinszky@gmail.com"));
 //    semp.sendMessage(mr, "my content, yiha...", "my subject, " + (Math.random()));
-    
-    
+      
+      
 //    SimpleEmailMessageProvider semp = new SimpleEmailMessageProvider(new EmailAccount(user, pass, imap, smtp));
 //    Set<EmailMessageRecipient> recipients = new HashSet<EmailMessageRecipient>();
 //    recipients.add(new EmailMessageRecipient("kojak", "cojacksounds@gmail.com"));
@@ -98,6 +135,7 @@ public class EmailTest {
 //    Source source = new Source(fsm.getContent().getContent());
 //    System.out.println(source.getRenderer().toString());
 //    semp.sendMessage(recipients, "a " + source.getRenderer().toString(), "Subject...");
+    
     
   }
   

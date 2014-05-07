@@ -1,5 +1,6 @@
 package hu.uszeged.inf.rgai.messagelog.beans;
 
+import hu.uszeged.inf.rgai.messagelog.MessageProvider;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.MessageProvider.Type;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
@@ -26,6 +27,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
   protected List<Person> recipients;
   protected Date date;
   protected Type messageType;
+  protected boolean updateFlags;
   
   protected FullMessage fullMessage;
 
@@ -38,10 +40,12 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param subTitle subtitle of the message, can be <code>null</code>
    * @param from a Person object, the sender of the message
    * @param date date of the message
+   * @param recipients the list of recipients
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
+   * @param updateFlags indicates that this message already exists at the display list, only update the flag infos of this message, but nothing else
    */
   public MessageListElement(String id, boolean seen, String title, String subTitle, int unreadCount, Person from,
-          List<Person> recipients, Date date, Type messageType) {
+          List<Person> recipients, Date date, Type messageType, boolean updateFlags) {
     this.id = id;
     this.seen = seen;
     this.title = title;
@@ -51,6 +55,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     this.subTitle = subTitle;
     this.unreadCount = unreadCount;
     this.messageType = messageType;
+    this.updateFlags = updateFlags;
   }
 
   /**
@@ -70,7 +75,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
   public MessageListElement(String id, boolean seen, String title, int unreadCount, Person from, List<Person> recipients, Date date, Type messageType) {
-    this(id, seen, title, null, unreadCount, from, recipients, date, messageType);
+    this(id, seen, title, null, unreadCount, from, recipients, date, messageType, false);
   }
   
   /**
@@ -84,7 +89,7 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    * @param messageType type of the message, see {@link hu.uszeged.inf.rgai.messagelog.MessageProvider.Type} for available types
    */
   public MessageListElement(String id, boolean seen, String title, Person from, List<Person> recipients, Date date, Type messageType) {
-    this(id, seen, title, null, -1, from, recipients, date, messageType);
+    this(id, seen, title, null, -1, from, recipients, date, messageType, false);
   }
   
    /**
@@ -99,7 +104,15 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
    */
   public MessageListElement(String id, boolean seen, String title, String snippet,
           Person from, List<Person> recipients, Date date, Type messageType) {
-    this(id, seen, title, snippet, -1, from, recipients, date, messageType);
+    this(id, seen, title, snippet, -1, from, recipients, date, messageType, false);
+  }
+  
+  public MessageListElement(String id, boolean seen, Person from, Date date, Type messageType, boolean updateFlags) {
+    this(id, seen, null, null, -1, from, null, date, messageType, updateFlags);
+  }
+  
+  public MessageListElement(String id, Person from, Date date, Type messageType) {
+    this(id, false, null, null, -1, from, null, date, messageType, false);
   }
   
   /**
@@ -181,6 +194,10 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     return messageType;
   }
 
+  public boolean isUpdateFlags() {
+    return updateFlags;
+  }
+
   public FullMessage getFullMessage() {
     return fullMessage;
   }
@@ -207,7 +224,9 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
 
   @Override
   public String toString() {
-    return "MessageListElement{" + "id=" + id + ", seen=" + seen + ", title=" + title + ", subTitle=" + subTitle + ", from=" + from + ", date=" + date + ", messageType=" + messageType + '}';
+    return "MessageListElement{" + "id=" + id + ", seen=" + seen + ", title=" + title + ", subTitle=" + subTitle
+            + ", from=" + from + ", date=" + date + " ("+ date.getTime() +"), messageType=" + messageType
+            + ", updateFlags=" + updateFlags +'}';
   }
 
   @Override
@@ -215,31 +234,31 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
     if (obj == null) {
       return false;
     }
-    if (getClass() != obj.getClass()) {
+    if (this.getClass() != obj.getClass()) {
       return false;
     }
     final MessageListElement other = (MessageListElement) obj;
-    if (this.id.equals(other.id)) {
+    
+    if (!this.id.equals(other.id)) {
       return false;
     }
-//    if (this.seen != other.seen) {
-//      return false;
-//    }
-    if ((this.title == null) ? (other.title != null) : !this.title.equals(other.title)) {
-      return false;
-    }
-    if ((this.subTitle == null) ? (other.subTitle != null) : !this.subTitle.equals(other.subTitle)) {
+    if (this.date != other.date && (this.date == null || !this.date.equals(other.date))) {
       return false;
     }
     if (this.from != other.from && (this.from == null || !this.from.equals(other.from))) {
       return false;
     }
-//    if (this.date != other.date && (this.date == null || !this.date.equals(other.date))) {
-//      return false;
-//    }
-    if (this.messageType != other.messageType) {
-      return false;
-    }
+    
+    return this.messageType == other.messageType;
+  }
+  
+  /**
+   * This equals function does not care about the messageType.
+   * @param obj
+   * @return 
+   */
+  public boolean weakEquals(Object obj) {
+    
     return true;
   }
 
@@ -251,6 +270,16 @@ public class MessageListElement /*implements Comparable<MessageListElement>*/ {
 //      return -1 * this.date.compareTo(o.date);
 //    }
 //  }
+
+  @Override
+  public int hashCode() {
+    int hash = 3;
+    hash = 29 * hash + (this.id != null ? this.id.hashCode() : 0);
+    hash = 29 * hash + (this.from != null ? this.from.hashCode() : 0);
+    hash = 29 * hash + (this.date != null ? this.date.hashCode() : 0);
+    hash = 29 * hash + (this.messageType != null ? this.messageType.hashCode() : 0);
+    return hash;
+  }
 
   
   
