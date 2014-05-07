@@ -4,15 +4,15 @@ import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPInputStream;
 import com.sun.mail.smtp.SMTPTransport;
 import hu.uszeged.inf.rgai.messagelog.beans.Attachment;
-import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailContent;
 import hu.uszeged.inf.rgai.messagelog.beans.EmailMessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.HtmlContent;
-import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageListElement;
 import hu.uszeged.inf.rgai.messagelog.beans.MessageRecipient;
 import hu.uszeged.inf.rgai.messagelog.beans.Person;
+import hu.uszeged.inf.rgai.messagelog.beans.account.EmailAccount;
 import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullMessage;
+import hu.uszeged.inf.rgai.messagelog.beans.fullmessage.FullSimpleMessage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -23,10 +23,10 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-import java.nio.charset.CharacterCodingException;
 import java.security.Security;
 import java.security.cert.CertPathValidatorException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -65,6 +65,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   private EmailAccount account;
   private String attachmentFolder = "../files/";
   private AttachmentProgressUpdate progressUpdate = null;
+  private static HashMap<EmailAccount, Store> connections;
 
   /**
    * Constructs a SimpleEmailMessageProvider object.
@@ -84,6 +85,28 @@ public class SimpleEmailMessageProvider implements MessageProvider {
    */
   public SimpleEmailMessageProvider(EmailAccount account) {
     this.account = account;
+  }
+  
+  private Store getStore(EmailAccount account) throws MessagingException {
+    Store store = null;
+    if (connections == null) {
+      connections = new HashMap<EmailAccount, Store>();
+    } else {
+      if (connections.containsKey(account)) {
+        store = connections.get(account);
+      }
+    }
+    if (store == null) {
+      store = getStore();
+      connections.put(account, store);
+    } else if (!store.isConnected()) {
+      store = getStore();
+      connections.put(account, store);
+    } else {
+      // do nothing: store exists and connected
+    }
+    
+    return store;
   }
   
   /**
@@ -120,7 +143,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
    * @throws MessagingException
    * @throws AuthenticationFailedException 
    */
-  protected Store getStore() throws NoSuchProviderException, MessagingException, AuthenticationFailedException {
+  private Store getStore() throws NoSuchProviderException, MessagingException, AuthenticationFailedException {
     Properties props = System.getProperties();
     this.setProperties(props);
     Session session = Session.getDefaultInstance(props, null);
@@ -152,7 +175,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
           AuthenticationFailedException {
     
     List<MessageListElement> emails = new LinkedList<MessageListElement>();
-    Store store = this.getStore();
+    Store store = this.getStore(account);
 
     IMAPFolder inbox = (IMAPFolder)store.getFolder("Inbox");
     inbox.open(Folder.READ_ONLY);
@@ -236,7 +259,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
       }
     }
     inbox.close(true);
-    store.close();
+//    store.close();
     
     return emails;
   }
@@ -465,7 +488,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
   @Override
   public FullMessage getMessage(String id) throws NoSuchProviderException, MessagingException, IOException {
 
-    Store store = this.getStore();
+    Store store = this.getStore(account);
     IMAPFolder folder;
     EmailContent content;
     folder = (IMAPFolder)store.getFolder("INBOX");
@@ -489,14 +512,14 @@ public class SimpleEmailMessageProvider implements MessageProvider {
     Date date = ms.getSentDate();
     
     folder.close(true);
-    store.close();
+//    store.close();
     
     return new FullSimpleMessage(id, subject, content.getContent(), date, from, false, MessageProvider.Type.EMAIL, null);
     
   }
   
   public byte[] getAttachmentOfMessage(String messageId, String attachmentId) throws NoSuchProviderException, MessagingException, IOException {
-    Store store = this.getStore();
+    Store store = this.getStore(account);
     IMAPFolder folder;
     folder = (IMAPFolder)store.getFolder("INBOX");
     folder.open(Folder.READ_WRITE);
@@ -597,7 +620,7 @@ public class SimpleEmailMessageProvider implements MessageProvider {
 
   @Override
   public void markMessageAsRead(String id) throws NoSuchProviderException, MessagingException, IOException {
-    Store store = this.getStore();
+    Store store = this.getStore(account);
     IMAPFolder folder;
     folder = (IMAPFolder)store.getFolder("INBOX");
     folder.open(Folder.READ_WRITE);

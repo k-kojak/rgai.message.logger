@@ -6,12 +6,24 @@ package hu.uszeged.inf.rgai.messagelog.beans;
  */
 public class HtmlContent {
 
-  public enum ContentType {TEXT, TEXT_PLAIN, TEXT_HTML};
+  public enum ContentType {
+    TEXT("text/*"),
+    TEXT_PLAIN("text/plain"),
+    TEXT_HTML("text/html");
+    
+    private final String mimeType;
+    
+    ContentType(String mimeType) {
+      this.mimeType = mimeType;
+    }
+    
+    public String getMimeName() {
+      return mimeType;
+    }
+  };
   
   protected StringBuilder content;
   protected ContentType contentType;
-  
-  
 
   public HtmlContent() {
     content = new StringBuilder();
